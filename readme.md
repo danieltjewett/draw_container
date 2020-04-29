@@ -1,5 +1,7 @@
 # Draw Container
 
+![Example](https://github.com/danieltjewett/draw_container/example.png "Example")
+
 A layout text engine for Game Maker Studio 2.  Uses concepts similar to [CSS Layout](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Introduction) and [Relative Layout](https://developer.android.com/guide/topics/ui/layout/relative).
 
 ## Example Project
@@ -59,16 +61,16 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 * `parent` - pointer to the parent container.
 * `widthPercent` - the width of the container as a percentage.
 * `heightPercent` - the height of the container as a percentage.
-* `_calculated` - whether the current container has been fully calculated with the correct widths / heights.
-* `computedWidth` - Without overriding the width property, computes the width of a container based on its children, grid type, marginLeft, marginRight, paddingLeft, paddingRight, strWidth.
-* `computedHeight` - Without overriding the height property, computes the height of a container based on its children, grid type, marginTop, marginBottom, paddingTop, paddingBottom, strHeight.
 * `strWidth` - See https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/strings/string_width.html for more details.  Used in computing the width of a container.
 * `strHeight` - Used in computing the height of a container.  Takes into account the width of a container.
+* `computedWidth` - Without overriding the width property, computes the width of a container based on its children, grid type, `marginLeft`, `marginRight`, `paddingLeft`, `paddingRight`, `strWidth`.
+* `computedHeight` - Without overriding the height property, computes the height of a container based on its children, grid type, `marginTop`, `marginBottom`, `paddingTop`, `paddingBottom`, `strHeight`.
+* `_calculated` - whether the current container has been fully calculated with the correct widths / heights.
 
 ##### Notes
 
 * `data` automatically gets cleaned up after the `draw_container` call.
-* The `calculateOnly` argument is for internal use only.  Don't invoke `draw_container` with the second argument.  Simply use `adraw_container(data)`
+* The `calculateOnly` argument is for internal use only.  Don't invoke `draw_container` with the second argument.  Simply use `draw_container(data)`
 
 ## Contributing
 
