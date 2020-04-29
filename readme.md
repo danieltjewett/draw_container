@@ -1,8 +1,8 @@
 # Draw Container
 
-![Example](https://github.com/danieltjewett/draw_container/example.png "Example")
+![Example](https://github.com/danieltjewett/draw_container/blob/master/example.png "Example")
 
-A layout text engine for Game Maker Studio 2.  Uses concepts similar to [CSS Layout](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Introduction) and [Relative Layout](https://developer.android.com/guide/topics/ui/layout/relative).
+A layout text engine for Game Maker Studio 2.  Instead of managing ever-changing positions and sizes of the `draw_text` routines, we manage containers and their layout type.  Uses concepts similar to [CSS Layout](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Introduction) and [Relative Layout](https://developer.android.com/guide/topics/ui/layout/relative).
 
 ## Example Project
 
