@@ -879,24 +879,24 @@ if (data[? "sprite"] != "")
 	}
 }
 
-var x1 = floor(data[? "xx"] - halfWidth - data[? "paddingLeft"]);
-var y1 = floor(data[? "yy"] - halfHeight - data[? "paddingTop"]);
+var x1 = data[? "xx"] - halfWidth - data[? "paddingLeft"];
+var y1 = data[? "yy"] - halfHeight - data[? "paddingTop"];
 
-var x2 = floor(data[? "xx"] + halfWidth + data[? "paddingRight"]);
-var y2 = floor(data[? "yy"] + halfHeight + data[? "paddingBottom"]);
+var x2 = data[? "xx"] + halfWidth + data[? "paddingRight"];
+var y2 = data[? "yy"] + halfHeight + data[? "paddingBottom"];
 
 if (data[? "fillAlpha"] != 0)
 {
 	draw_set_alpha(data[? "fillAlpha"]);
 	draw_set_color(data[? "fillColor"]);
-	draw_roundrect_ext(x1, y1, x2, y2, data[? "radius"], data[? "radius"], false);
+	draw_roundrect_ext(x1 - 1, y1 - 1, x2 - 1, y2 - 1, data[? "radius"], data[? "radius"], false);
 }
 
 if (data[? "borderAlpha"] != 0)
 {
 	draw_set_alpha(data[? "borderAlpha"]);
 	draw_set_color(data[? "borderColor"]);
-	draw_roundrect_ext(x1, y1, x2, y2, data[? "radius"], data[? "radius"], true);
+	draw_roundrect_ext(x1, y1, x2 - 2, y2 - 2, data[? "radius"], data[? "radius"], true);
 }
 
 var startX;
@@ -908,36 +908,36 @@ var spriteY;
 switch (data[? "hAlign"])
 {
 	case fa_left:
-		startX = floor(data[? "xx"] - halfWidth);
-		spriteX = floor(startX + spriteHalfWidth);
+		startX = data[? "xx"] - halfWidth;
+		spriteX = startX + spriteHalfWidth;
 		break;
 		
 	case fa_center:
-		startX = floor(data[? "xx"]);
-		spriteX = floor(startX);
+		startX = data[? "xx"];
+		spriteX = startX;
 		break;
 		
 	case fa_right:
-		startX = floor(data[? "xx"] + halfWidth);
-		spriteX = floor(startX - spriteHalfWidth);
+		startX = data[? "xx"] + halfWidth;
+		spriteX = startX - spriteHalfWidth;
 		break;
 }
 
 switch (data[? "vAlign"])
 {
 	case fa_top:
-		startY = floor(data[? "yy"] - halfHeight) + 1;
-		spriteY = floor(startY + spriteHalfHeight);
+		startY = data[? "yy"] - halfHeight;
+		spriteY = startY + spriteHalfHeight;
 		break;
 		
 	case fa_middle:
-		startY = floor(data[? "yy"]) + 1;
-		spriteY = floor(startY);
+		startY = data[? "yy"];
+		spriteY = startY;
 		break;
 		
 	case fa_bottom:
-		startY = floor(data[? "yy"] + halfHeight) + 1;
-		spriteY = floor(startY - spriteHalfHeight);
+		startY = data[? "yy"] + halfHeight;
+		spriteY = startY - spriteHalfHeight;
 		break;
 }
 
@@ -958,10 +958,10 @@ if (data[? "str"] != "")
 		draw_set_alpha(data[? "shadowAlpha"]);
 		draw_set_color(data[? "shadowColor"]);
 
-		draw_text_ext(startX - 1, startY - 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
-		draw_text_ext(startX - 1, startY + 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
-		draw_text_ext(startX + 1, startY - 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
-		draw_text_ext(startX + 1, startY + 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
+		draw_text_ext(startX - 1, startY - 1, hashStr, data[? "lineHeight"], data[? "width"]);
+		draw_text_ext(startX - 1, startY + 1, hashStr, data[? "lineHeight"], data[? "width"]);
+		draw_text_ext(startX + 1, startY - 1, hashStr, data[? "lineHeight"], data[? "width"]);
+		draw_text_ext(startX + 1, startY + 1, hashStr, data[? "lineHeight"], data[? "width"]);
 	}
 
 	if (data[? "textAlpha"] > 0)
@@ -969,7 +969,7 @@ if (data[? "str"] != "")
 		draw_set_alpha(data[? "textAlpha"]);
 		draw_set_color(data[? "textColor"]);
 
-		draw_text_ext(startX, startY, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
+		draw_text_ext(startX, startY, hashStr, data[? "lineHeight"], data[? "width"]);
 	}
 }
 
