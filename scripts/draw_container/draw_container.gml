@@ -256,6 +256,14 @@ if (!ds_map_exists(data, "flow"))
 }
 
 #endregion
+#region require full
+
+if (!ds_map_exists(data, "requireFull"))
+{
+	data[? "requireFull"] = true;
+}
+
+#endregion
 #region computed width
 
 if (!ds_map_exists(data, "computedWidth"))
@@ -372,7 +380,7 @@ if (!ds_map_exists(data, "sprite"))
 {
 	data[? "sprite"] = "";
 }
-else
+else if (data[? "sprite"] != "")
 {
 	spriteWidth = sprite_get_width(data[? "sprite"]);
 	spriteHeight = sprite_get_height(data[? "sprite"]);
@@ -417,7 +425,7 @@ if (!ds_map_exists(data, "width"))
 {
 	if (!hasParent)
 	{
-		if (data[? "flow"] == "fill")
+		if (data[? "flow"] == "fill" || data[? "flow"] == "stack")
 		{
 			data[? "width"] = container_get_width(data);
 			data[? "widthPercent"] = container_get_width_percent(data);
@@ -472,6 +480,11 @@ if (!ds_map_exists(data, "width"))
 				data[? "width"] = 1;
 			}
 		}
+		else if (parent[? "flow"] == "stack")
+		{
+			data[? "width"] = parent[? "width"];
+			data[? "widthPercent"] = 1;
+		}
 		else
 		{
 			show_error("Unknown flow property, " + parent[? "flow"], true);
@@ -482,7 +495,7 @@ else if (data[? "width"] > 1)
 {
 	if (hasParent)
 	{
-		data[? "widthPercent"] = container_get_width_percent(data); //data[? "width"] / parent[? "width"];
+		data[? "widthPercent"] = container_get_width_percent(data);
 	}
 	else
 	{
@@ -503,7 +516,7 @@ if (!ds_map_exists(data, "height"))
 {
 	if (!hasParent)
 	{
-		if (data[? "flow"] == "fill")
+		if (data[? "flow"] == "fill" || data[? "flow"] == "stack")
 		{
 			data[? "height"] = container_get_height(data);
 			data[? "heightPercent"] = container_get_height_percent(data);
@@ -558,6 +571,11 @@ if (!ds_map_exists(data, "height"))
 				data[? "height"] = 1;
 			}
 		}
+		else if (parent[? "flow"] == "stack")
+		{
+			data[? "height"] = parent[? "height"];
+			data[? "heightPercent"] = 1;
+		}
 		else
 		{
 			show_error("Unknown flow property, " + parent[? "flow"], true);
@@ -568,7 +586,7 @@ else if (data[? "height"] > 1)
 {
 	if (hasParent)
 	{
-		data[? "heightPercent"] = container_get_height_percent(data); //data[? "height"] / parent[? "height"];
+		data[? "heightPercent"] = container_get_height_percent(data);
 	}
 	else
 	{
@@ -590,11 +608,10 @@ if (!ds_map_exists(data, "xx"))
 	data[? "xx"] = 0;
 }
 
-//TODO -1
 switch (data[? "hAnchor"])
 {
 	case fa_left:
-		data[? "xx"] += (data[? "width"] + data[? "paddingLeft"] + data[? "paddingRight"]) * .5 - 1;
+		data[? "xx"] += (data[? "width"] + data[? "paddingLeft"] + data[? "paddingRight"]) * .5;
 		break;
 		
 	case fa_center:
@@ -602,13 +619,13 @@ switch (data[? "hAnchor"])
 		break;
 		
 	case fa_right:
-		data[? "xx"] -= (data[? "width"] + data[? "paddingLeft"] + data[? "paddingRight"]) * .5 - 1;
+		data[? "xx"] -= (data[? "width"] + data[? "paddingLeft"] + data[? "paddingRight"]) * .5;
 		break;
 }
 
 if (hasParent)
 {
-	if (parent[? "grid"] == "row")
+	if (parent[? "grid"] == "row" && parent[? "flow"] != "stack")
 	{
 		data[? "xx"] -= parent[? "width"] * .5;
 		
@@ -643,11 +660,10 @@ if (!ds_map_exists(data, "yy"))
 	data[? "yy"] = 0;
 }
 
-//TODO -1
 switch (data[? "vAnchor"])
 {
 	case fa_top:
-		data[? "yy"] += (data[? "height"] + data[? "paddingTop"] + data[? "paddingBottom"]) * .5 - 1;
+		data[? "yy"] += (data[? "height"] + data[? "paddingTop"] + data[? "paddingBottom"]) * .5;
 		break;
 		
 	case fa_middle:
@@ -655,13 +671,13 @@ switch (data[? "vAnchor"])
 		break;
 		
 	case fa_bottom:
-		data[? "yy"] -= (data[? "height"] + data[? "paddingTop"] + data[? "paddingBottom"]) * .5 - 1;
+		data[? "yy"] -= (data[? "height"] + data[? "paddingTop"] + data[? "paddingBottom"]) * .5;
 		break;
 }
 
 if (parent != -1)
 {
-	if (parent[? "grid"] == "column")
+	if (parent[? "grid"] == "column" && parent[? "flow"] != "stack")
 	{
 		data[? "yy"] -= parent[? "height"] * .5;
 		
@@ -863,11 +879,11 @@ if (data[? "sprite"] != "")
 	}
 }
 
-var x1 = data[? "xx"] - halfWidth - data[? "paddingLeft"];
-var y1 = data[? "yy"] - halfHeight - data[? "paddingTop"];
+var x1 = floor(data[? "xx"] - halfWidth - data[? "paddingLeft"]);
+var y1 = floor(data[? "yy"] - halfHeight - data[? "paddingTop"]);
 
-var x2 = data[? "xx"] + halfWidth + data[? "paddingRight"];
-var y2 = data[? "yy"] + halfHeight + data[? "paddingBottom"];
+var x2 = floor(data[? "xx"] + halfWidth + data[? "paddingRight"]);
+var y2 = floor(data[? "yy"] + halfHeight + data[? "paddingBottom"]);
 
 if (data[? "fillAlpha"] != 0)
 {
@@ -889,41 +905,39 @@ var startY;
 var spriteX;
 var spriteY;
 
-//TODO +1
 switch (data[? "hAlign"])
 {
 	case fa_left:
-		startX = data[? "xx"] - halfWidth + 1;
-		spriteX = startX + spriteHalfWidth;
+		startX = floor(data[? "xx"] - halfWidth);
+		spriteX = floor(startX + spriteHalfWidth);
 		break;
 		
 	case fa_center:
-		startX = data[? "xx"] + 1;
-		spriteX = startX
+		startX = floor(data[? "xx"]);
+		spriteX = floor(startX);
 		break;
 		
 	case fa_right:
-		startX = data[? "xx"] + halfWidth + 1;
-		spriteX = startX - spriteHalfWidth;
+		startX = floor(data[? "xx"] + halfWidth);
+		spriteX = floor(startX - spriteHalfWidth);
 		break;
 }
 
-//TODO +2
 switch (data[? "vAlign"])
 {
 	case fa_top:
-		startY = data[? "yy"] - halfHeight + 2;
-		spriteY = startY + spriteHalfHeight;
+		startY = floor(data[? "yy"] - halfHeight) + 1;
+		spriteY = floor(startY + spriteHalfHeight);
 		break;
 		
 	case fa_middle:
-		startY = data[? "yy"] + 2;
-		spriteY = startY;
+		startY = floor(data[? "yy"]) + 1;
+		spriteY = floor(startY);
 		break;
 		
 	case fa_bottom:
-		startY = data[? "yy"] + halfHeight + 2;
-		spriteY = startY - spriteHalfHeight;
+		startY = floor(data[? "yy"] + halfHeight) + 1;
+		spriteY = floor(startY - spriteHalfHeight);
 		break;
 }
 
@@ -944,10 +958,10 @@ if (data[? "str"] != "")
 		draw_set_alpha(data[? "shadowAlpha"]);
 		draw_set_color(data[? "shadowColor"]);
 
-		draw_text_ext(startX - 1, startY - 1, hashStr, data[? "lineHeight"], data[? "width"]);
-		draw_text_ext(startX - 1, startY + 1, hashStr, data[? "lineHeight"], data[? "width"]);
-		draw_text_ext(startX + 1, startY - 1, hashStr, data[? "lineHeight"], data[? "width"]);
-		draw_text_ext(startX + 1, startY + 1, hashStr, data[? "lineHeight"], data[? "width"]);
+		draw_text_ext(startX - 1, startY - 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
+		draw_text_ext(startX - 1, startY + 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
+		draw_text_ext(startX + 1, startY - 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
+		draw_text_ext(startX + 1, startY + 1, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
 	}
 
 	if (data[? "textAlpha"] > 0)
@@ -955,7 +969,7 @@ if (data[? "str"] != "")
 		draw_set_alpha(data[? "textAlpha"]);
 		draw_set_color(data[? "textColor"]);
 
-		draw_text_ext(startX, startY, hashStr, data[? "lineHeight"], data[? "width"]);
+		draw_text_ext(startX, startY, hashStr, floor(data[? "lineHeight"]), floor(data[? "width"]));
 	}
 }
 
@@ -987,9 +1001,19 @@ if (childrenSize > 0)
 		}
 	}
 
-	if (percent != 1)
+	if (percent != 1 && data[? "flow"] != "stack" && data[? "requireFull"])
 	{
-		show_error("Percentage should add to 1, actual value is " + string(percent), true);
+		var errStr = "";
+		if (data[? "grid"] == "column")
+		{
+			errStr = "Height";
+		}
+		else if (data[? "grid"] == "row")
+		{
+			errStr = "Width";
+		}
+		
+		show_error(errStr + " Percentage should add to 1, actual value is " + string(percent), true);
 	}
 }
 

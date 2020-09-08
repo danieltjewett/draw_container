@@ -31,7 +31,7 @@ ds_map_add_list(container, "children", children);
 	ds_map_add_list(wrapper, "children", nest);
 
 		var portraitData = ds_map_create();
-		portraitData[? "yy"] = -15;
+		portraitData[? "yy"] = -14;
 		portraitData[? "width"] = 2;
 		portraitData[? "sprite"] = messagePortrait;
 		portraitData[? "imageAlpha"] = 1;
@@ -39,7 +39,7 @@ ds_map_add_list(container, "children", children);
 		ds_list_add_map(nest, portraitData);
 
 		var messageContainer = ds_map_create();
-		messageContainer[? "yy"] = -8;
+		messageContainer[? "yy"] = -7;
 		messageContainer[? "marginLeft"] = 50;
 		
 		ds_list_add_map(nest, messageContainer);
