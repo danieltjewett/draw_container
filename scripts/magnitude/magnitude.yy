@@ -1,8 +1,12 @@
 {
-    "id": "903a25ea-db04-4281-9563-87a62904bcc4",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "magnitude",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "magnitude",
+  "tags": [],
+  "resourceType": "GMScript",
 }

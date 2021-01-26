@@ -6,7 +6,7 @@
     "path": "folders/Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "macros",
+  "name": "draw_container_get_properties",
   "tags": [],
   "resourceType": "GMScript",
 }

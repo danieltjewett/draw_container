@@ -11,74 +11,74 @@ var textBoxWidth = 500;
 var textBoxHeight = 100;
 
 //
-var container = ds_map_create();
-container[? "xx"] = xx;
-container[? "yy"] = yy;
-container[? "width"] = textBoxWidth;
-container[? "grid"] = "column";
+var container = {
+	x: xx,
+	y: yy,
+	width: textBoxWidth,
+	grid: "column",
+};
 
-var children = ds_list_create();
-ds_map_add_list(container, "children", children);
+container.children = [];
 
-	var wrapper = ds_map_create();
-	wrapper[? "height"] = textBoxHeight;
-	wrapper[? "radius"] = -1;
-	wrapper[? "fillAlpha"] = .7;
+	var wrapper = {
+		height: textBoxHeight,
+		radius: -1,
+		fillAlpha: .7,
+	};
+
+	array_push(container.children, wrapper);
 	
-	ds_list_add_map(children, wrapper);
-	
-	var nest = ds_list_create();
-	ds_map_add_list(wrapper, "children", nest);
+	wrapper.children = [];
 
-		var portraitData = ds_map_create();
-		portraitData[? "yy"] = -14;
-		portraitData[? "width"] = 2;
-		portraitData[? "sprite"] = messagePortrait;
-		portraitData[? "imageAlpha"] = 1;
+		array_push(wrapper.children, {
+			y: -14,
+			width: 2,
+			sprite: messagePortrait,
+			imageAlpha: 1,
+		});
+
+		var messageContainer = {
+			y: -7,
+			marginLeft: 50,
+		};
 		
-		ds_list_add_map(nest, portraitData);
-
-		var messageContainer = ds_map_create();
-		messageContainer[? "yy"] = -7;
-		messageContainer[? "marginLeft"] = 50;
+		array_push(wrapper.children, messageContainer);
 		
-		ds_list_add_map(nest, messageContainer);
-
-		var messageChildren = ds_list_create();
-		ds_map_add_list(messageContainer, "children", messageChildren);
+		messageContainer.children = [];
 		
-			var titleContainer = ds_map_create();
-			var titleChildren = ds_list_create();
-			ds_map_add_list(titleContainer, "children", titleChildren);
+			var titleContainer = {};
+			titleContainer.children = [];
 
-				var titleData = ds_map_create();
-				titleData[? "str"] = messageTitle;
-				titleData[? "textAlpha"] = 1;
-				titleData[? "font"] = font_Arial10;
-				titleData[? "hAlign"] = fa_left;
-				titleData[? "sprite"] = spr_backdrop;
-				titleData[? "spriteCover"] = true;
-				titleData[? "imageAlpha"] = .7;
+				var titleData = {
+					str: messageTitle,
+					textAlpha: 1,
+					font: font_Arial10,
+					hAlign: fa_left,
+					sprite: spr_backdrop,
+					spriteCover: true,
+					imageAlpha: .7,
+				};
 
-				var titleFiller = ds_map_create();
+				var titleFiller = {};
 
-				ds_list_add_map(titleChildren, titleData);
-				ds_list_add_map(titleChildren, titleFiller);
+				array_push(titleContainer.children, titleData);
+				array_push(titleContainer.children, titleFiller);
 
-			ds_list_add_map(messageChildren, titleContainer);
+			array_push(messageContainer.children, titleContainer);
 		
-			var messageData = ds_map_create();
-			messageData[? "str"] = printText;
-			messageData[? "yy"] = 8;
-			messageData[? "paddingTop"] = 10;
-			messageData[? "paddingRight"] = 20;
-			messageData[? "paddingBottom"] = 8;
-			messageData[? "textAlpha"] = 1;
-			messageData[? "font"] = font_Arial12;
-			messageData[? "hAlign"] = fa_left;
-			messageData[? "vAlign"] = fa_top;
+			var messageData = {
+				str: printText,
+				y: 8,
+				paddingTop: 10,
+				paddingRight: 20,
+				paddingBottom: 8,
+				textAlpha: 1,
+				font: font_Arial12,
+				hAlign: fa_left,
+				vAlign: fa_top,
+			}
 		
-			ds_list_add_map(messageChildren, messageData);
+			array_push(messageContainer.children, messageData);
 	
 	var sizeScale = 1;
 	var spriteAlpha = 0;
@@ -99,8 +99,8 @@ ds_map_add_list(container, "children", children);
 	}
 	
 	var button = get_button_label_container("B", 0, spriteAlpha, textAlpha, sizeScale, color, textColor, shadowColor);
-	button[? "vAnchor"] = fa_bottom;
-	ds_list_add_map(children, button);
+	button.vAnchor = fa_bottom;
+	array_push(container.children, button);
 
 draw_container(container);
 //
