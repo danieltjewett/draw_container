@@ -52,7 +52,7 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 * `textColor` - defaults to `c_white`.  The color to draw the text with.
 * `textAlpha` - defaults to `1`.  The alpha to draw the text color at.
 * `shadowColor` - defaults to `c_black`.  The shadow color to draw the text with.
-* `shadowAlpha` - defaults to the value of `textAlpha`.  The alpha to draw the shadow color at.
+* `shadowAlpha` - defaults to `1`.  The alpha to draw the shadow color at.
 * `borderColor` - defaults to `c_white`.  The color to draw a border with.
 * `borderAlpha` - defaults to `0`.  The alpha to draw the borderColor at.
 * `children` - an `array` of `structs` representing the children containers
@@ -64,12 +64,14 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 * `heightPercent` - the height of the container as a percentage.
 * `strWidth` - See https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/strings/string_width.html for more details.  Used in computing the width of a container.
 * `strHeight` - Used in computing the height of a container.  Takes into account the width of a container.
-* `computedWidth` - Without overriding the width property, computes the width of a container based on its children, grid type, `marginLeft`, `marginRight`, `paddingLeft`, `paddingRight`, `strWidth`.
-* `computedHeight` - Without overriding the height property, computes the height of a container based on its children, grid type, `marginTop`, `marginBottom`, `paddingTop`, `paddingBottom`, `strHeight`.
+* `computedWidth` - Without overriding the `width` property, computes the width of a container based on its children, grid type, `marginLeft`, `marginRight`, `paddingLeft`, `paddingRight`, `strWidth`.
+* `computedHeight` - Without overriding the `height` property, computes the height of a container based on its children, grid type, `marginTop`, `marginBottom`, `paddingTop`, `paddingBottom`, `strHeight`.
+* `renderX` - Without overriding the `x` property, computes the location of where the different pieces will be rendered on the x axis.
+* `renderY` - Without overriding the `y` property, computes the location of where the different pieces will be rendered on the y axis.
 
-##### Notes
+##### Notes and Optimization
 
-* `data` automatically gets cleaned up after the `draw_container` call.
+`data` automatically gets cleaned up after the `draw_container` call by default.  That way the structure of the container is easy to modify, by creating the struct right before the `draw_container` script.  If we want to optimize, we should create this struct elsewhere, say the `Create` event, and only update the properties that need updating in the `Draw` event.  To optimize, pass in `false` into the optional second parameter, which won't delete the struct.  To optimize even further, pass in `true` to the `optimizeHasAllProperties` flag.  This will not run checks for the container, and its children for defaults values and will assume those values have been set / updated as needed.  An an example on how to use this optimization is in the last room.
 
 ## Contributing
 

@@ -36,6 +36,8 @@
     {"id":{"name":"room_message3","path":"rooms/room_message3/room_message3.yy",},"order":5,},
     {"id":{"name":"draw_container","path":"scripts/draw_container/draw_container.yy",},"order":24,},
     {"id":{"name":"room_message4","path":"rooms/room_message4/room_message4.yy",},"order":7,},
+    {"id":{"name":"obj_Message10","path":"objects/obj_Message10/obj_Message10.yy",},"order":20,},
+    {"id":{"name":"room_message10","path":"rooms/room_message10/room_message10.yy",},"order":18,},
     {"id":{"name":"room_message5","path":"rooms/room_message5/room_message5.yy",},"order":9,},
     {"id":{"name":"room_message6","path":"rooms/room_message6/room_message6.yy",},"order":11,},
     {"id":{"name":"room_message7","path":"rooms/room_message7/room_message7.yy",},"order":13,},
@@ -65,6 +67,7 @@
     {"roomId":{"name":"room_message7","path":"rooms/room_message7/room_message7.yy",},},
     {"roomId":{"name":"room_message8","path":"rooms/room_message8/room_message8.yy",},},
     {"roomId":{"name":"room_message9","path":"rooms/room_message9/room_message9.yy",},},
+    {"roomId":{"name":"room_message10","path":"rooms/room_message10/room_message10.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Sprites.yy","order":1,"resourceVersion":"1.0","name":"Sprites","tags":[],"resourceType":"GMFolder",},
