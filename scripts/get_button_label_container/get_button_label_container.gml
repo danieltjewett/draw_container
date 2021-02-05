@@ -51,6 +51,7 @@ function get_button_label_container()
 		font: font_Calibri10,
 		fillAlpha: 0,
 		textAlpha: textAlpha,
+		shadowAlpha: textAlpha,
 		textColor: textColor,
 		shadowColor: shadowColor,
 		sprite: sprite01,

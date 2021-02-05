@@ -11,6 +11,7 @@ var container = {
 	y: yy,
 	fillAlpha: .7,
 	textAlpha: 1,
+	shadowAlpha: 1,
 	width: width,
 	padding: 8,
 };

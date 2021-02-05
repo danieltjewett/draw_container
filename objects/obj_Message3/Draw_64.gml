@@ -35,12 +35,14 @@ var container = {
 			font: font_Arial16,
 			textColor: c_red,
 			textAlpha: 1,
+			shadowAlpha: 1,
 		},
 		{
 			str: str1,
 			height: .2,
 			font: font_Arial10,
 			textAlpha: 1,
+			shadowAlpha: 1,
 		},
 		{
 			height: .05,
@@ -51,6 +53,7 @@ var container = {
 			height: .2,
 			font: font_Arial10,
 			textAlpha: 1,
+			shadowAlpha: 1,
 		}
 	]
 };

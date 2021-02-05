@@ -152,11 +152,6 @@ function draw_container_get_properties(data)
 	if (!variable_struct_exists(data, "font"))
 	{
 		data.font = font_Arial8;
-		draw_set_font(data.font);
-	}
-	else
-	{
-		draw_set_font(data.font);
 	}
 	
 	if (!variable_struct_exists(data, "lineHeight"))
@@ -272,7 +267,7 @@ function draw_container_get_properties(data)
 	
 	if (!variable_struct_exists(data, "shadowAlpha"))
 	{
-		data.shadowAlpha = data.textAlpha;
+		data.shadowAlpha = 1;
 	}
 	
 	if (!variable_struct_exists(data, "borderColor"))

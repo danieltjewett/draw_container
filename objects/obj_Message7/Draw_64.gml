@@ -73,6 +73,7 @@ container.children = [];
 				paddingRight: 20,
 				paddingBottom: 8,
 				textAlpha: 1,
+				shadowAlpha: 1,
 				font: font_Arial12,
 				hAlign: fa_left,
 				vAlign: fa_top,

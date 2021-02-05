@@ -1,7 +1,12 @@
-/// @description draw_container(data) See documenation at https://github.com/danieltjewett/draw_container
+/// @description draw_container(data, [deleteDataAfter=true, optimizeHasAllProperties=false]) See documenation at https://github.com/danieltjewett/draw_container
 /// @param data
+/// @param [deleteDataAfter=true
+/// @param optimizeHasAllProperties=false]
 function draw_container(data)
-{	
+{
+	var deleteDataAfter = argument_count > 1 ? argument[1] : true;
+	var optimizeHasAllProperties = argument_count > 2 ? argument[2] : false;
+	
 	var prevAlpha = draw_get_alpha();
 	var prevColor = draw_get_color();
 	
@@ -12,10 +17,15 @@ function draw_container(data)
 	var parentChildren = -1;
 	var parentChildrenSize = 0;
 	
-	if (!variable_struct_exists(data, "parent"))
+	if (!variable_struct_exists(data, "parent") || data.parent == -1)
 	{
+		//we still need to set parent for optimized properties.  This will do that.
 		//first time, need to build the entire structure
-		draw_container_get_properties(data);
+		if (!optimizeHasAllProperties)
+		{
+			draw_container_get_properties(data);
+		}
+		
 		draw_container_calculate(data);
 	}
 	else
@@ -227,15 +237,15 @@ function draw_container(data)
 	switch (data.hAnchor)
 	{
 		case fa_left:
-			data.x += (data.width + data.paddingLeft + data.paddingRight) * .5;
+			data.renderX = data.x + (data.width + data.paddingLeft + data.paddingRight) * .5;
 			break;
 		
 		case fa_center:
-			data.x += 0;
+			data.renderX = data.x;
 			break;
 		
 		case fa_right:
-			data.x -= (data.width + data.paddingLeft + data.paddingRight) * .5;
+			data.renderX = data.x - (data.width + data.paddingLeft + data.paddingRight) * .5;
 			break;
 	}
 
@@ -243,29 +253,29 @@ function draw_container(data)
 	{
 		if (parent.grid == "row" && parent.flow != "stack")
 		{
-			data.x -= parent.width * .5;
+			data.renderX -= parent.width * .5;
 		
 			for (var i=0; i<parentChildrenSize; i++) //size of current rows
 			{
 				var child = parentChildren[i];
 				if (child == data)
 				{
-					data.x += child.widthPercent * parent.width * .5;
+					data.renderX += child.widthPercent * parent.width * .5;
 					break;
 				}
 				else
 				{
-					data.x += child.widthPercent * parent.width;
+					data.renderX += child.widthPercent * parent.width;
 				}
 			}
 		}
 	
-		data.x += parent.x;
+		data.renderX += parent.renderX;
 		
-		data.x += data.paddingLeft * .5;
-		data.x -= data.paddingRight * .5;
-		data.x += data.marginLeft * .5;
-		data.x -= data.marginRight * .5;
+		data.renderX += data.paddingLeft * .5;
+		data.renderX -= data.paddingRight * .5;
+		data.renderX += data.marginLeft * .5;
+		data.renderX -= data.marginRight * .5;
 	}
 
 	#endregion
@@ -274,15 +284,15 @@ function draw_container(data)
 	switch (data.vAnchor)
 	{
 		case fa_top:
-			data.y += (data.height + data.paddingTop + data.paddingBottom) * .5;
+			data.renderY = data.y + (data.height + data.paddingTop + data.paddingBottom) * .5;
 			break;
 		
 		case fa_middle:
-			data.y += 0;
+			data.renderY = data.y;
 			break;
 		
 		case fa_bottom:
-			data.y -= (data.height + data.paddingTop + data.paddingBottom) * .5;
+			data.renderY = data.y - (data.height + data.paddingTop + data.paddingBottom) * .5;
 			break;
 	}
 
@@ -290,29 +300,29 @@ function draw_container(data)
 	{
 		if (parent.grid == "column" && parent.flow != "stack")
 		{
-			data.y -= parent.height * .5;
+			data.renderY -= parent.height * .5;
 		
 			for (var i=0; i<parentChildrenSize; i++) //size of current rows
 			{
 				var child = parentChildren[i];
 				if (child == data)
 				{
-					data.y += child.heightPercent * parent.height * .5;
+					data.renderY += child.heightPercent * parent.height * .5;
 					break;
 				}
 				else
 				{
-					data.y += child.heightPercent * parent.height;
+					data.renderY += child.heightPercent * parent.height;
 				}
 			}
 		}
 	
-		data.y += parent.y;
+		data.renderY += parent.renderY;
 		
-		data.y += data.paddingTop * .5;
-		data.y -= data.paddingBottom * .5;
-		data.y += data.marginTop * .5;
-		data.y -= data.marginBottom * .5;
+		data.renderY += data.paddingTop * .5;
+		data.renderY -= data.paddingBottom * .5;
+		data.renderY += data.marginTop * .5;
+		data.renderY -= data.marginBottom * .5;
 	}
 
 	#endregion
@@ -359,11 +369,11 @@ function draw_container(data)
 		}
 	}
 
-	var x1 = data.x - halfWidth - data.paddingLeft;
-	var y1 = data.y - halfHeight - data.paddingTop;
+	var x1 = data.renderX - halfWidth - data.paddingLeft;
+	var y1 = data.renderY - halfHeight - data.paddingTop;
 
-	var x2 = data.x + halfWidth + data.paddingRight;
-	var y2 = data.y + halfHeight + data.paddingBottom;
+	var x2 = data.renderX + halfWidth + data.paddingRight;
+	var y2 = data.renderY + halfHeight + data.paddingBottom;
 
 	if (data.fillAlpha != 0)
 	{
@@ -388,17 +398,17 @@ function draw_container(data)
 	switch (data.hAlign)
 	{
 		case fa_left:
-			startX = data.x - halfWidth;
+			startX = data.renderX - halfWidth;
 			spriteX = startX + spriteHalfWidth;
 			break;
 		
 		case fa_center:
-			startX = data.x;
+			startX = data.renderX;
 			spriteX = startX;
 			break;
 		
 		case fa_right:
-			startX = data.x + halfWidth;
+			startX = data.renderX + halfWidth;
 			spriteX = startX - spriteHalfWidth;
 			break;
 	}
@@ -406,17 +416,17 @@ function draw_container(data)
 	switch (data.vAlign)
 	{
 		case fa_top:
-			startY = data.y - halfHeight;
+			startY = data.renderY - halfHeight;
 			spriteY = startY + spriteHalfHeight;
 			break;
 		
 		case fa_middle:
-			startY = data.y;
+			startY = data.renderY;
 			spriteY = startY;
 			break;
 		
 		case fa_bottom:
-			startY = data.y + halfHeight;
+			startY = data.renderY + halfHeight;
 			spriteY = startY - spriteHalfHeight;
 			break;
 	}
@@ -473,7 +483,7 @@ function draw_container(data)
 		{
 			var child = data.children[i];
 		
-			draw_container(child);
+			draw_container(child, deleteDataAfter, optimizeHasAllProperties);
 		
 			if (data.grid == "column")
 			{
@@ -505,7 +515,7 @@ function draw_container(data)
 	#region finale
 
 	//end recursion
-	if (!hasParent)
+	if (!hasParent && deleteDataAfter)
 	{
 		delete data;
 	}

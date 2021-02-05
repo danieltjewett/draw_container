@@ -19,6 +19,7 @@ var container = {
 	fillAlpha: .7,
 	fillColor: color,
 	textAlpha: 1,
+	shadowAlpha: 1,
 	flow: "split",
 	grid: "row",
 };

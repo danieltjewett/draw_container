@@ -15,6 +15,7 @@ var container = {
 	hAlign: fa_left,
 	fillAlpha: .7,
 	textAlpha: 1,
+	shadowAlpha: 1,
 	width: width,
 	paddingTop: 10,
 	paddingBottom: 10,

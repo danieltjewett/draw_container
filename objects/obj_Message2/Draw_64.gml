@@ -21,16 +21,11 @@ var container = {
 };
 
 container.children = [];
-
-	var titleData = ds_map_create();
-	titleData[? "str"] = "Open Inventory";
-	titleData[? "textAlpha"] = 1;
-	titleData[? "font"] = font_Arial12;
-	titleData[? "marginBottom"] = 2;
 	
 	array_push(container.children, {
 		str: "Open Inventory",
 		textAlpha: 1,
+		shadowAlpha: 1,
 		font: font_Arial10,
 		marginBottom: 10,
 	});
@@ -38,6 +33,7 @@ container.children = [];
 	array_push(container.children, {
 		str: "Equip weapons, shields, and other gear here.",
 		textAlpha: 1,
+		shadowAlpha: 1,
 		font: font_Arial10,
 		marginBottom: 10,
 	});
@@ -85,6 +81,7 @@ container.children = [];
 			hasContent = true;
 			nextData.str = label;
 			nextData.textAlpha = .7;
+			nextData.shadowAlpha = .7;
 		}
 	
 		array_push(middleContainer.children, middleData);

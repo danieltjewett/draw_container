@@ -30,6 +30,7 @@ if (menuSize > 0)
 			font: font_Arial8,
 			fillAlpha: .7,
 			textAlpha: 1,
+			shadowAlpha: 1,
 			flow: "split",
 			grid: "row",
 		};
