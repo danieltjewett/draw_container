@@ -52,18 +52,19 @@ function draw_container(data)
 	#endregion
 	#region width
 
+	data.renderWidth = data.width;
 	if (data.width == -1)
 	{
 		if (!hasParent)
 		{
 			if (data.flow == "fill" || data.flow == "stack")
 			{
-				data.width = container_get_width(data);
+				data.renderWidth = container_get_width(data);
 				data.widthPercent = container_get_width_percent(data);
 			}
 			else if (data.flow == "split")
 			{
-				data.width = data.strWidth;
+				data.renderWidth = data.strWidth;
 				data.widthPercent = 1;
 			}
 			else
@@ -87,33 +88,33 @@ function draw_container(data)
 							percent += child.widthPercent;
 						}
 				
-						data.width = 1 - percent;
+						data.renderWidth = 1 - percent;
 					}
 					else
 					{
-						data.width = container_get_width(data);
+						data.renderWidth = container_get_width(data);
 						data.widthPercent = container_get_width_percent(data);
 					}
 				}
 				else
 				{
-					data.width = 1;
+					data.renderWidth = 1;
 				}
 			}
 			else if (parent.flow == "split")
 			{
 				if (parent.grid == "row")
 				{
-					data.width = 1 / parentChildrenSize;
+					data.renderWidth = 1 / parentChildrenSize;
 				}
 				else
 				{
-					data.width = 1;
+					data.renderWidth = 1;
 				}
 			}
 			else if (parent.flow == "stack")
 			{
-				data.width = parent.width;
+				data.renderWidth = parent.renderWidth;
 				data.widthPercent = 1;
 			}
 			else
@@ -134,27 +135,28 @@ function draw_container(data)
 		}
 	}
 
-	if (data.width <= 1) //percentage
+	if (data.renderWidth <= 1) //percentage
 	{
-		data.widthPercent = data.width;
-		data.width = (parent.width * data.width) - data.marginLeft - data.marginRight - data.paddingLeft - data.paddingRight;
+		data.widthPercent = data.renderWidth;
+		data.renderWidth = (parent.renderWidth * data.renderWidth) - data.marginLeft - data.marginRight - data.paddingLeft - data.paddingRight;
 	}
 
 	#endregion
 	#region height
 
+	data.renderHeight = data.height;
 	if (data.height == -1)
 	{
 		if (!hasParent)
 		{
 			if (data.flow == "fill" || data.flow == "stack")
 			{
-				data.height = container_get_height(data);
+				data.renderHeight = container_get_height(data);
 				data.heightPercent = container_get_height_percent(data);
 			}
 			else if (data.flow == "split")
 			{
-				data.height = data.strHeight;
+				data.renderHeight = data.strHeight;
 				data.heightPercent = 1;
 			}
 			else
@@ -178,33 +180,33 @@ function draw_container(data)
 							percent += child.heightPercent;
 						}
 				
-						data.height = 1 - percent;
+						data.renderHeight = 1 - percent;
 					}
 					else
 					{
-						data.height = container_get_height(data);
+						data.renderHeight = container_get_height(data);
 						data.heightPercent = container_get_height_percent(data);
 					}
 				}
 				else
 				{
-					data.height = 1;
+					data.renderHeight = 1;
 				}
 			}
 			else if (parent.flow == "split")
 			{
 				if (parent.grid == "column")
 				{
-					data.height = 1 / parentChildrenSize;
+					data.renderHeight = 1 / parentChildrenSize;
 				}
 				else
 				{
-					data.height = 1;
+					data.renderHeight = 1;
 				}
 			}
 			else if (parent.flow == "stack")
 			{
-				data.height = parent.height;
+				data.renderHeight = parent.renderHeight;
 				data.heightPercent = 1;
 			}
 			else
@@ -225,10 +227,10 @@ function draw_container(data)
 		}
 	}
 
-	if (data.height <= 1) //percentage
+	if (data.renderHeight <= 1) //percentage
 	{
-		data.heightPercent = data.height;
-		data.height = (parent.height * data.height) - data.marginTop - data.marginBottom - data.paddingTop - data.paddingBottom;
+		data.heightPercent = data.renderHeight;
+		data.renderHeight = (parent.renderHeight * data.renderHeight) - data.marginTop - data.marginBottom - data.paddingTop - data.paddingBottom;
 	}
 
 	#endregion
@@ -237,7 +239,7 @@ function draw_container(data)
 	switch (data.hAnchor)
 	{
 		case fa_left:
-			data.renderX = data.x + (data.width + data.paddingLeft + data.paddingRight) * .5;
+			data.renderX = data.x + (data.renderWidth + data.paddingLeft + data.paddingRight) * .5;
 			break;
 		
 		case fa_center:
@@ -245,7 +247,7 @@ function draw_container(data)
 			break;
 		
 		case fa_right:
-			data.renderX = data.x - (data.width + data.paddingLeft + data.paddingRight) * .5;
+			data.renderX = data.x - (data.renderWidth + data.paddingLeft + data.paddingRight) * .5;
 			break;
 	}
 
@@ -253,19 +255,19 @@ function draw_container(data)
 	{
 		if (parent.grid == "row" && parent.flow != "stack")
 		{
-			data.renderX -= parent.width * .5;
+			data.renderX -= parent.renderWidth * .5;
 		
 			for (var i=0; i<parentChildrenSize; i++) //size of current rows
 			{
 				var child = parentChildren[i];
 				if (child == data)
 				{
-					data.renderX += child.widthPercent * parent.width * .5;
+					data.renderX += child.widthPercent * parent.renderWidth * .5;
 					break;
 				}
 				else
 				{
-					data.renderX += child.widthPercent * parent.width;
+					data.renderX += child.widthPercent * parent.renderWidth;
 				}
 			}
 		}
@@ -284,7 +286,7 @@ function draw_container(data)
 	switch (data.vAnchor)
 	{
 		case fa_top:
-			data.renderY = data.y + (data.height + data.paddingTop + data.paddingBottom) * .5;
+			data.renderY = data.y + (data.renderHeight + data.paddingTop + data.paddingBottom) * .5;
 			break;
 		
 		case fa_middle:
@@ -292,7 +294,7 @@ function draw_container(data)
 			break;
 		
 		case fa_bottom:
-			data.renderY = data.y - (data.height + data.paddingTop + data.paddingBottom) * .5;
+			data.renderY = data.y - (data.renderHeight + data.paddingTop + data.paddingBottom) * .5;
 			break;
 	}
 
@@ -300,19 +302,19 @@ function draw_container(data)
 	{
 		if (parent.grid == "column" && parent.flow != "stack")
 		{
-			data.renderY -= parent.height * .5;
+			data.renderY -= parent.renderHeight * .5;
 		
 			for (var i=0; i<parentChildrenSize; i++) //size of current rows
 			{
 				var child = parentChildren[i];
 				if (child == data)
 				{
-					data.renderY += child.heightPercent * parent.height * .5;
+					data.renderY += child.heightPercent * parent.renderHeight * .5;
 					break;
 				}
 				else
 				{
-					data.renderY += child.heightPercent * parent.height;
+					data.renderY += child.heightPercent * parent.renderHeight;
 				}
 			}
 		}
@@ -331,26 +333,26 @@ function draw_container(data)
 	//override scales
 	if (data.spriteCover)
 	{
-		data.imageXscale = data.width / spriteWidth;
-		data.imageYscale = data.height / spriteHeight;
+		data.imageXscale = data.renderWidth / spriteWidth;
+		data.imageYscale = data.renderHeight / spriteHeight;
 	}
 	//
 	
 	//override radius
 	if (data.radius == -1)
 	{
-		var smaller = min(data.width, data.height);
-		var larger = max(data.width, data.height);
+		var smaller = min(data.renderWidth, data.renderHeight);
+		var larger = max(data.renderWidth, data.renderHeight);
 			
 		var ratio = smaller / larger;
-		var mag = magnitude(data.width, data.height);
+		var mag = magnitude(data.renderWidth, data.renderHeight);
 			
 		data.radius = round(ratio * mag * .5);
 	}
 	//
 
-	var halfWidth = data.width * .5;
-	var halfHeight = data.height * .5;
+	var halfWidth = data.renderWidth * .5;
+	var halfHeight = data.renderHeight * .5;
 
 	var spriteHalfWidth = 0;
 	var spriteHalfHeight = 0;
@@ -450,10 +452,10 @@ function draw_container(data)
 			draw_set_alpha(data.shadowAlpha);
 			draw_set_color(data.shadowColor);
 			
-			draw_text_ext(startX - 1, startY - 1, hashStr, data.lineHeight, data.width);
-			draw_text_ext(startX - 1, startY + 1, hashStr, data.lineHeight, data.width);
-			draw_text_ext(startX + 1, startY - 1, hashStr, data.lineHeight, data.width);
-			draw_text_ext(startX + 1, startY + 1, hashStr, data.lineHeight, data.width);
+			draw_text_ext(startX - 1, startY - 1, hashStr, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX - 1, startY + 1, hashStr, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX + 1, startY - 1, hashStr, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX + 1, startY + 1, hashStr, data.lineHeight, data.renderWidth);
 		}
 
 		if (data.textAlpha > 0)
@@ -461,7 +463,7 @@ function draw_container(data)
 			draw_set_alpha(data.textAlpha);
 			draw_set_color(data.textColor);
 
-			draw_text_ext(startX, startY, hashStr, data.lineHeight, data.width);
+			draw_text_ext(startX, startY, hashStr, data.lineHeight, data.renderWidth);
 		}
 	}
 

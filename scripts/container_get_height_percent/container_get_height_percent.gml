@@ -9,5 +9,5 @@ function container_get_height_percent(data)
 	}
 
 	var outside = data.marginTop + data.marginBottom + data.paddingTop + data.paddingBottom;
-	return (outside + data.height) / parent.height;
+	return (outside + data.renderHeight) / parent.renderHeight;
 }

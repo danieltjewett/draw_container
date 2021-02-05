@@ -64,10 +64,12 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 * `heightPercent` - the height of the container as a percentage.
 * `strWidth` - See https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/strings/string_width.html for more details.  Used in computing the width of a container.
 * `strHeight` - Used in computing the height of a container.  Takes into account the width of a container.
-* `computedWidth` - Without overriding the `width` property, computes the width of a container based on its children, grid type, `marginLeft`, `marginRight`, `paddingLeft`, `paddingRight`, `strWidth`.
-* `computedHeight` - Without overriding the `height` property, computes the height of a container based on its children, grid type, `marginTop`, `marginBottom`, `paddingTop`, `paddingBottom`, `strHeight`.
+* `computedWidth` - Computes the width of a container based on its children, grid type, `marginLeft`, `marginRight`, `paddingLeft`, `paddingRight`, `strWidth`.
+* `computedHeight` - Computes the height of a container based on its children, grid type, `marginTop`, `marginBottom`, `paddingTop`, `paddingBottom`, `strHeight`.
 * `renderX` - Without overriding the `x` property, computes the location of where the different pieces will be rendered on the x axis.
 * `renderY` - Without overriding the `y` property, computes the location of where the different pieces will be rendered on the y axis.
+* `renderWidth` - Without overriding the `width` property, computes the actual width of the container.
+* `renderHeight` - Without overriding the `heieght` property, computes the actual height of the container.
 
 ##### Notes and Optimization
 

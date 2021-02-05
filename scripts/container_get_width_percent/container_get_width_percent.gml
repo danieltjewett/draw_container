@@ -9,5 +9,5 @@ function container_get_width_percent(data)
 	}
 
 	var outside = data.marginLeft + data.marginRight + data.paddingLeft + data.paddingRight;
-	return (outside + data.width) / parent.width;
+	return (outside + data.renderWidth) / parent.renderWidth;
 }
