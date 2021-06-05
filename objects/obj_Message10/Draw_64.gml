@@ -7,6 +7,6 @@ container.fillAlpha = _image_alpha * _alphaMulti;
 container.textAlpha = _image_alpha;
 container.shadowAlpha = _image_alpha;
 
-draw_container(container, false, container[$ "parent"] != undefined);
+draw_container(container);
 
 #endregion

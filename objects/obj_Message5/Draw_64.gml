@@ -61,6 +61,7 @@ if (menuSize > 0)
 	}
 
 	draw_container(container);
+	delete container;
 }
 	
 #endregion
