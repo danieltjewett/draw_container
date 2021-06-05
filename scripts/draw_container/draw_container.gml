@@ -1,12 +1,7 @@
-/// @description draw_container(data, [deleteDataAfter=true, optimizeHasAllProperties=false]) See documenation at https://github.com/danieltjewett/draw_container
+/// @description draw_container(data) See documenation at https://github.com/danieltjewett/draw_container
 /// @param data
-/// @param [deleteDataAfter=true
-/// @param optimizeHasAllProperties=false]
 function draw_container(data)
-{
-	var deleteDataAfter = argument_count > 1 ? argument[1] : true;
-	var optimizeHasAllProperties = argument_count > 2 ? argument[2] : false;
-	
+{	
 	var prevAlpha = draw_get_alpha();
 	var prevColor = draw_get_color();
 	
@@ -17,11 +12,13 @@ function draw_container(data)
 	var parentChildren = -1;
 	var parentChildrenSize = 0;
 	
-	if (!variable_struct_exists(data, "parent") || data.parent == -1)
+	var dataParentStructExists = variable_struct_exists(data, "parent");
+	
+	if (!dataParentStructExists || data.parent == -1)
 	{
 		//we still need to set parent for optimized properties.  This will do that.
 		//first time, need to build the entire structure
-		if (!optimizeHasAllProperties)
+		if (!dataParentStructExists)
 		{
 			draw_container_get_properties(data);
 		}
@@ -485,7 +482,7 @@ function draw_container(data)
 		{
 			var child = data.children[i];
 		
-			draw_container(child, deleteDataAfter, optimizeHasAllProperties);
+			draw_container(child);
 		
 			if (data.grid == "column")
 			{
@@ -511,15 +508,6 @@ function draw_container(data)
 		
 			throw errStr + " Percentage should add to 1, actual value is " + string(percent);
 		}
-	}
-
-	#endregion
-	#region finale
-
-	//end recursion
-	if (!hasParent && deleteDataAfter)
-	{
-		delete data;
 	}
 
 	#endregion

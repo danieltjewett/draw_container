@@ -73,7 +73,7 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 
 ##### Notes and Optimization
 
-`data` automatically gets cleaned up after the `draw_container` call by default.  That way the structure of the container is easy to modify, by creating the struct right before the `draw_container` script.  If we want to optimize, we should create this struct elsewhere, say the `Create` event, and only update the properties that need updating in the `Draw` event.  To optimize, pass in `false` into the optional second parameter, which won't delete the struct.  To optimize even further, pass in `true` to the `optimizeHasAllProperties` flag.  This will not run checks for the container, and its children for defaults values and will assume those values have been set / updated as needed.  An an example on how to use this optimization is in the last room.
+`data` NO LONGER gets automatically cleaned up after the `draw_container` call by default.  This is because using `delete` on a struct instantiated outside a function does not seem to unallocate memory (whether a bug or intentional).  Thefore, the responsbility is on the developer to call `delete` after `draw_container` is called.  However, if we want to optimize, we should create this struct elsewhere, say the `Create` event, and only update the properties that need updating in the `Draw` event.  Since `parent` is an internal property, the function assumes that if `parent` exists on a struct, that all the properties exist on the struct and its children (therefore, if `parent` doesn't exist, it will fetch all the properties).  An an example on how to use this optimization is in the last room.
 
 ## Contributing
 

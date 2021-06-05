@@ -278,4 +278,5 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //

@@ -41,5 +41,6 @@ container.children = [];
 	});
 
 draw_container(container);
+delete container;
 
 #endregion

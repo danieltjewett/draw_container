@@ -102,5 +102,6 @@ button.vAnchor = fa_top;
 array_push(container.children, button);
 	
 draw_container(container);
+delete container;
 
 #endregion

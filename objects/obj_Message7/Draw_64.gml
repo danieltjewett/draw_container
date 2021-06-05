@@ -104,6 +104,7 @@ container.children = [];
 	array_push(container.children, button);
 
 draw_container(container);
+delete container;
 //
 
 characterCounter += characterCounterSpeed;

@@ -59,5 +59,6 @@ var container = {
 };
 
 draw_container(container);
+delete container;
 
 #endregion
