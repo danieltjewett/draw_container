@@ -280,6 +280,11 @@ function draw_container_get_properties(data)
 		data.borderAlpha = 0;
 	}
 	
+	if (!variable_struct_exists(data, "shaderFunc"))
+	{
+		data.shaderFunc = -1;
+	}
+	
 	if (hasChildren)
 	{
 		if (!hasParent)

@@ -1,5 +1,5 @@
-repeat (1000)
-{
+//repeat (1000)
+//{
 
 //
 var data = {
@@ -276,7 +276,7 @@ var data = {
 					height: .15,
 				},
 				{
-					str: "This is a description of a sword that is really cute and yummy.",
+					str: "This is a description of an item that is really cute and yummy.",
 					hAlign: fa_left,
 					vAlign: fa_top,
 					fillColor: c_blue,
@@ -293,4 +293,4 @@ draw_container(data);
 delete data;
 //
 
-}
+//}
