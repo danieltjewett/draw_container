@@ -1,3 +1,6 @@
+repeat (1000)
+{
+
 //
 var data = {
 	x: 550,
@@ -36,6 +39,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -74,6 +78,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -110,6 +115,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -125,6 +131,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -161,6 +168,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -178,6 +186,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -197,6 +206,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -210,6 +220,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -222,6 +233,7 @@ var data = {
 };
 
 draw_container(data);
+delete data;
 //
 
 //
@@ -280,3 +292,5 @@ var data = {
 draw_container(data);
 delete data;
 //
+
+}

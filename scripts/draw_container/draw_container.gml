@@ -1,7 +1,7 @@
 /// @description draw_container(data) See documenation at https://github.com/danieltjewett/draw_container
 /// @param data
 function draw_container(data)
-{	
+{
 	var prevAlpha = draw_get_alpha();
 	var prevColor = draw_get_color();
 	
@@ -373,6 +373,11 @@ function draw_container(data)
 
 	var x2 = data.renderX + halfWidth + data.paddingRight;
 	var y2 = data.renderY + halfHeight + data.paddingBottom;
+	
+	if (data.shaderFunc != -1)
+	{
+		data.shaderFunc();	
+	}
 
 	if (data.fillAlpha != 0)
 	{
@@ -442,17 +447,22 @@ function draw_container(data)
 		
 		draw_set_font(data.font);
 
-		var hashStr = string_hash_to_newline(data.str);
-
 		if (data.shadowAlpha > 0)
 		{			
 			draw_set_alpha(data.shadowAlpha);
 			draw_set_color(data.shadowColor);
 			
-			draw_text_ext(startX - 1, startY - 1, hashStr, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX - 1, startY + 1, hashStr, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX + 1, startY - 1, hashStr, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX + 1, startY + 1, hashStr, data.lineHeight, data.renderWidth);
+			//thin perp shadows
+			draw_text_ext(startX - 1, startY, data.str, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX + 1, startY, data.str, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX, startY - 1, data.str, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX, startY + 1, data.str, data.lineHeight, data.renderWidth);
+			
+			//diag thicker shadows
+			draw_text_ext(startX - 1, startY - 1, data.str, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX - 1, startY + 1, data.str, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX + 1, startY - 1, data.str, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX + 1, startY + 1, data.str, data.lineHeight, data.renderWidth);
 		}
 
 		if (data.textAlpha > 0)
@@ -460,8 +470,13 @@ function draw_container(data)
 			draw_set_alpha(data.textAlpha);
 			draw_set_color(data.textColor);
 
-			draw_text_ext(startX, startY, hashStr, data.lineHeight, data.renderWidth);
+			draw_text_ext(startX, startY, data.str, data.lineHeight, data.renderWidth);
 		}
+	}
+	
+	if (data.shaderFunc != -1)
+	{
+		shader_reset();
 	}
 
 	//reset
