@@ -330,8 +330,8 @@ function draw_container(data)
 	//override scales
 	if (data.spriteCover)
 	{
-		data.imageXscale = data.renderWidth / spriteWidth;
-		data.imageYscale = data.renderHeight / spriteHeight;
+		data.imageXscale = (data.renderWidth + data.paddingLeft + data.paddingRight) / spriteWidth;
+		data.imageYscale = (data.renderHeight + data.paddingTop + data.paddingBottom) / spriteHeight;
 	}
 	//
 	
@@ -379,16 +379,16 @@ function draw_container(data)
 		data.shaderFunc();	
 	}
 
-	if (data.fillAlpha != 0)
+	if (data.fillAlpha != 0 && data.computedOpacity != 0)
 	{
-		draw_set_alpha(data.fillAlpha);
+		draw_set_alpha(data.fillAlpha * data.computedOpacity);
 		draw_set_color(data.fillColor);
 		draw_roundrect_ext(x1 - 1, y1 - 1, x2 - 1, y2 - 1, data.radius, data.radius, false);
 	}
 
-	if (data.borderAlpha != 0)
+	if (data.borderAlpha != 0 && data.computedOpacity != 0)
 	{
-		draw_set_alpha(data.borderAlpha);
+		draw_set_alpha(data.borderAlpha * data.computedOpacity);
 		draw_set_color(data.borderColor);
 		draw_roundrect_ext(x1, y1, x2 - 2, y2 - 2, data.radius, data.radius, true);
 	}
@@ -435,9 +435,19 @@ function draw_container(data)
 			break;
 	}
 
-	if (data.sprite != -1 && data.imageIndex != -1 && data.imageAlpha > 0)
-	{	
-		draw_sprite_ext(data.sprite, data.imageIndex, spriteX, spriteY, data.imageXscale, data.imageYscale, data.imageRotation, data.imageColor, data.imageAlpha);
+	if (data.sprite != -1 && data.imageIndex != -1 && data.imageAlpha != 0 && data.computedOpacity != 0)
+	{
+		draw_sprite_ext(
+			data.sprite,
+			data.imageIndex,
+			spriteX - (data.paddingLeft * .5) + (data.paddingRight * .5),
+			spriteY - (data.paddingTop * .5) + (data.paddingBottom * .5),
+			data.imageXscale,
+			data.imageYscale,
+			data.imageRotation,
+			data.imageColor,
+			data.imageAlpha * data.computedOpacity
+		);
 	}
 
 	if (data.str != "")
@@ -447,10 +457,12 @@ function draw_container(data)
 		
 		draw_set_font(data.font);
 
-		if (data.shadowAlpha > 0)
-		{			
-			draw_set_alpha(data.shadowAlpha);
+		if (data.shadowAlpha != 0 && data.computedOpacity != 0)
+		{
+			draw_set_alpha(data.shadowAlpha * data.computedOpacity);
 			draw_set_color(data.shadowColor);
+			
+			//TODO wonky fade outs with all of these shadows
 			
 			//thin perp shadows
 			draw_text_ext(startX - 1, startY, data.str, data.lineHeight, data.renderWidth);
@@ -465,9 +477,9 @@ function draw_container(data)
 			draw_text_ext(startX + 1, startY + 1, data.str, data.lineHeight, data.renderWidth);
 		}
 
-		if (data.textAlpha > 0)
+		if (data.textAlpha != 0 && data.computedOpacity != 0)
 		{
-			draw_set_alpha(data.textAlpha);
+			draw_set_alpha(data.textAlpha * data.computedOpacity);
 			draw_set_color(data.textColor);
 
 			draw_text_ext(startX, startY, data.str, data.lineHeight, data.renderWidth);

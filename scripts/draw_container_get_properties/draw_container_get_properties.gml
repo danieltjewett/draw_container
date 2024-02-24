@@ -49,6 +49,11 @@ function draw_container_get_properties(data)
 		data.flow = "fill";
 	}
 	
+	if (!variable_struct_exists(data, "opacity"))
+	{
+		data.opacity = 1;
+	}
+	
 	if (!variable_struct_exists(data, "margin"))
 	{
 		if (!variable_struct_exists(data, "marginLeft"))

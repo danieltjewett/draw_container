@@ -12,6 +12,10 @@ function draw_container_calculate(data)
 	var hasChildren = childrenSize > 0;
 	//
 	
+	//opacity section
+	data.computedOpacity = hasParent ? data.parent.computedOpacity * data.opacity : data.opacity;
+	//
+	
 	//recurse first
 	for (var i=0; i<childrenSize; i++)
 	{
@@ -31,37 +35,44 @@ function draw_container_calculate(data)
 	var width = 0;
 	var widthPercent = 1;
 	
+	var padding = 0;
+	
 	var current = data;
 	
-	//walk up the parent to find a width to base computed height around
-	while (current != -1 && width == 0)
+	if (data.str != "")
 	{
-		if (current.width != -1)
+		//walk up the parent to find a width to base computed height around
+		while (current != -1 && width == 0)
 		{
-			width = current.width;
+			if (current.width != -1)
+			{
+				width = current.width;
 			
-			if (width <= 1)
-			{
-				widthPercent *= width;
-				width = 0;
+				if (width <= 1)
+				{
+					widthPercent *= width;
+					width = 0;
+				}
+				else if (width > 1)
+				{
+					width *= widthPercent;
+				}
 			}
-			else if (width > 1)
-			{
-				width *= widthPercent;
-			}
-		}
 		
-		current = current.parent;
+			padding += current.paddingLeft + current.paddingRight;
+		
+			current = current.parent;
+		}
 	}
 	
 	//if we find nothing, just use it's current width
 	if (width == 0)
 	{
-		width = data.strWidth;	
+		width = data.strWidth;
 	}
-	else if (hasParent) //take into account current margin width and padding width, if it is not the root
+	else if (hasParent) //take into account current margin width and total padding width, if it is not the root
 	{
-		width -= data.marginLeft + data.marginLeft + data.paddingLeft + data.paddingRight;
+		width -= data.marginLeft + data.marginLeft + padding;
 	}
 	
 	data.strHeight = string_height_ext(data.str, data.lineHeight, width);
