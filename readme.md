@@ -85,4 +85,4 @@ If you file an issue, the issue should contain a title and a clear description o
 
 ## License
 
-Draw Container is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+GMS Tasks is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

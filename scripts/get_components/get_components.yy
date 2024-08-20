@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"log",
+  "%Name":"get_components",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"log",
+  "name":"get_components",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

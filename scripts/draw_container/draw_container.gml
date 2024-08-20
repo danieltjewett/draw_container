@@ -1,7 +1,16 @@
 /// @description draw_container(data) See documenation at https://github.com/danieltjewett/draw_container
 /// @param data
+
 function draw_container(data)
 {
+	//TODO fix modules 2, 3, 8 and 9; they have some formatting issues
+	//rework this to be more legible
+	//
+	
+	var last_decorators = {
+		color: c_orange	
+	}
+	
 	var prevAlpha = draw_get_alpha();
 	var prevColor = draw_get_color();
 	
@@ -34,6 +43,13 @@ function draw_container(data)
 		parentChildrenSize = array_length(parentChildren);
 	}
 	//
+	
+	//fill in values if the data is incomplete
+	update_data_with_components(data);
+	if (!struct_exists(data, "len"))
+	{
+		data.len = string_length(data.str);
+	}
 	
 	#region sprite
 
@@ -449,41 +465,94 @@ function draw_container(data)
 			data.imageAlpha * data.computedOpacity
 		);
 	}
-
-	if (data.str != "")
-	{
-		draw_set_halign(data.hAlign);
-		draw_set_valign(data.vAlign);
+			
+	draw_set_halign(data.hAlign);
+	draw_set_valign(data.vAlign);
 		
-		draw_set_font(data.font);
+	draw_set_font(data.font);
+	
+	var lines = container_get_lines(data);
+	
+	var total_lines = array_length(lines);
+	
+	for (var line_index = 0; line_index < array_length(lines); line_index++)
+	{
+		
+		var line_width = lines[line_index].width;
+		var left_width = 0;
+		var right_width = line_width;
+		
+		for (var i = 0; i < array_length(lines[line_index].segments); i++) {
+			
+			var segment = lines[line_index].segments[i];
+			
+			var text_to_draw = segment.contents;
+			//text_to_draw = string_replace_all(text_to_draw," ","_");
+			
+			if (text_to_draw != "")
+			{
+				
+				var size_of_segment = string_width(text_to_draw);
+				right_width -= string_width(text_to_draw);
+				var width_offset = get_width_offset(left_width, right_width);
+				
+				text_to_draw = string_repeat("\n", line_index) + text_to_draw + string_repeat("\n", (total_lines - line_index));
+				
+				if (data.shadowAlpha != 0 && data.computedOpacity != 0)
+				{
+					draw_set_alpha(data.shadowAlpha * data.computedOpacity);
+					draw_set_color(data.shadowColor);
+			
+					//TODO wonky fade outs with all of these shadows
+			
+					//thin perp shadows
+					draw_text_ext(startX + width_offset - 1, startY, text_to_draw, data.lineHeight, data.renderWidth);
+					draw_text_ext(startX + width_offset + 1, startY, text_to_draw, data.lineHeight, data.renderWidth);
+					draw_text_ext(startX + width_offset, startY - 1, text_to_draw, data.lineHeight, data.renderWidth);
+					draw_text_ext(startX + width_offset, startY + 1, text_to_draw, data.lineHeight, data.renderWidth);
+			
+					//diag thicker shadows
+					draw_text_ext(startX - 1 + width_offset, startY - 1, text_to_draw, data.lineHeight, data.renderWidth);
+					draw_text_ext(startX - 1 + width_offset, startY + 1, text_to_draw, data.lineHeight, data.renderWidth);
+					draw_text_ext(startX + 1 + width_offset, startY - 1, text_to_draw, data.lineHeight, data.renderWidth);
+					draw_text_ext(startX + 1 + width_offset, startY + 1, text_to_draw, data.lineHeight, data.renderWidth);
+				}
 
-		if (data.shadowAlpha != 0 && data.computedOpacity != 0)
-		{
-			draw_set_alpha(data.shadowAlpha * data.computedOpacity);
-			draw_set_color(data.shadowColor);
+				if (data.textAlpha != 0 && data.computedOpacity != 0)
+				{
+					draw_set_alpha(data.textAlpha * data.computedOpacity);
+					if (array_length(segment.tags) == 0) {
+						draw_set_color(data.textColor);
+					} else {
+						
+						for (var tag_index = 0; tag_index < array_length(segment.tags); tag_index++) {
+							var converted_tag_index = segment.tags[tag_index];
+							show_debug_message(converted_tag_index);
+							var tag_number_index = real(converted_tag_index);
+							show_debug_message(text_to_draw + ": " + string(array_length(data.decorators)));
+							if (tag_number_index < array_length(data.decorators)) {
+								show_debug_message(data.decorators[tag_number_index]);
+								last_decorators = data.decorators[tag_number_index];
+							}
+						}
+						
+						if (variable_struct_exists(last_decorators, "color")) {
+							draw_set_color(last_decorators.color);
+						}
+					}
+
+					draw_text_ext(startX + width_offset, startY, text_to_draw, data.lineHeight, data.renderWidth);
+				}
+				//draw_text_ext(startX, startY+100+30*line_index+10*i, string(right_width), data.lineHeight, data.renderWidth*2);
 			
-			//TODO wonky fade outs with all of these shadows
+				left_width += string_width(text_to_draw);
 			
-			//thin perp shadows
-			draw_text_ext(startX - 1, startY, data.str, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX + 1, startY, data.str, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX, startY - 1, data.str, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX, startY + 1, data.str, data.lineHeight, data.renderWidth);
+			}
 			
-			//diag thicker shadows
-			draw_text_ext(startX - 1, startY - 1, data.str, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX - 1, startY + 1, data.str, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX + 1, startY - 1, data.str, data.lineHeight, data.renderWidth);
-			draw_text_ext(startX + 1, startY + 1, data.str, data.lineHeight, data.renderWidth);
 		}
-
-		if (data.textAlpha != 0 && data.computedOpacity != 0)
-		{
-			draw_set_alpha(data.textAlpha * data.computedOpacity);
-			draw_set_color(data.textColor);
-
-			draw_text_ext(startX, startY, data.str, data.lineHeight, data.renderWidth);
-		}
+		
+		show_debug_message(data.decorators);
+		
 	}
 	
 	if (data.shaderFunc != -1)
@@ -538,4 +607,12 @@ function draw_container(data)
 	}
 
 	#endregion
+}
+
+function get_width_offset(left_width, right_width) {
+	var halign = draw_get_halign();
+	
+	if (halign == fa_right) return -right_width;
+	else if (halign == fa_center) return (left_width-right_width)/2;
+	else return left_width; // fa_left or undefined
 }

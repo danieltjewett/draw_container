@@ -14,7 +14,7 @@ function draw_container_get_properties(data)
 	}
 	else
 	{
-		data.children = [];	
+		data.children = [];
 	}
 	//
 	
@@ -132,6 +132,11 @@ function draw_container_get_properties(data)
 		data.paddingTop = data.padding;
 		data.paddingRight = data.padding;
 		data.paddingBottom = data.padding;
+	}
+	
+	if (!variable_struct_exists(data, "decorators"))
+	{
+		data.decorators = [];
 	}
 	
 	if (!variable_struct_exists(data, "width"))

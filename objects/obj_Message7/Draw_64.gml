@@ -3,9 +3,10 @@
 var xx = obj_Global.GUI_WIDTH * .5;
 var yy = obj_Global.GUI_HEIGHT - 100;
 
-var text = currentMessage;
-var index = floor(clamp(characterCounter, 0, currentMessageLength));
-var printText = string_copy(text, 1, index);
+//you can manually send in the modified text, but this doesn't play nice with emphasized text.
+//var text = currentMessage;
+//var index = floor(clamp(characterCounter, 0, currentMessageLength));
+//var printText = string_copy(text, 1, index);
 	
 var textBoxWidth = 500;
 var textBoxHeight = 100;
@@ -67,7 +68,8 @@ container.children = [];
 			array_push(messageContainer.children, titleContainer);
 		
 			var messageData = {
-				str: printText,
+				str: currentMessage,
+				len: characterCounter,
 				y: 8,
 				paddingTop: 10,
 				paddingRight: 20,
@@ -77,6 +79,17 @@ container.children = [];
 				font: font_Arial12,
 				hAlign: fa_left,
 				vAlign: fa_top,
+				decorators: [
+					{
+						color: c_lime
+					},
+					{
+						color: c_yellow
+					},
+					{
+						color: c_red
+					}
+				]
 			}
 		
 			array_push(messageContainer.children, messageData);

@@ -1,5 +1,5 @@
 container = {
-	str: "Optimization example",
+	str: "{{Optimization example}}",
 	x: obj_Global.GUI_WIDTH * .5,
 	y: obj_Global.GUI_HEIGHT * .25,
 	fillAlpha: 0,

@@ -6,7 +6,7 @@ var xx = obj_Global.GUI_WIDTH;
 var yy = 60;
 
 var container = {
-	str: "This is an example of a message that could be used for a tip.",
+	str: "This is an example of a message that could be used for a {{tip}}.",
 	x: xx,
 	y: yy,
 	hAnchor: fa_right,

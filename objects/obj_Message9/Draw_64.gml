@@ -93,13 +93,24 @@ var data = {
 	children: [
 		{
 			name: "col1",
-			str: "I am getting so sick of this not working.  My neck is sore and I should go to bed, since I have to work tomorrow.",
+			str: "I am getting so {{sick}} of this not working.  My neck is {{sore}} and I should go to bed, since I have to work {{tomorrow.}}",
 			fillAlpha: .5,
 			fillColor: c_red,
 			padding: 10,
 			marginBottom: 10,
 			hAlign: fa_right,
 			vAlign: fa_bottom,
+			decorators: [
+				{
+					color: c_lime
+				},
+				{
+					color: c_yellow
+				},
+				{
+					color: c_red
+				}
+			]
 		},
 		{
 			name: "col2",
