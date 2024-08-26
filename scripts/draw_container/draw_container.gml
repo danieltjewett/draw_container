@@ -524,13 +524,13 @@ function draw_container(data)
 				if (data.textAlpha != 0 && data.computedOpacity != 0)
 				{
 					draw_set_alpha(data.textAlpha * data.computedOpacity);
-					if (array_length(segment.tags) == 0)
+					if (segment.emphasis)
 					{
-						draw_set_color(data.textColor);
+						draw_set_color(data.emphasisColor);
 					}
 					else
 					{
-						draw_set_color(data.emphasisColor);
+						draw_set_color(data.textColor);
 					}
 
 					draw_text_ext(startX + width_offset, startY, text_to_draw, data.lineHeight, data.renderWidth);

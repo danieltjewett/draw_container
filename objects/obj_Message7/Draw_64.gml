@@ -79,17 +79,7 @@ container.children = [];
 				font: font_Arial12,
 				hAlign: fa_left,
 				vAlign: fa_top,
-				decorators: [
-					{
-						color: c_lime
-					},
-					{
-						color: c_yellow
-					},
-					{
-						color: c_red
-					}
-				]
+				emphasisColor: c_lime
 			}
 		
 			array_push(messageContainer.children, messageData);

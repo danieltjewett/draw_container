@@ -13,15 +13,9 @@ function component_emphasize(str, substr = "", tag = -1)
 	{
 		var pos = string_pos_ext(substr,str,last_pos);
 		if (pos == 0) break;
-		last_pos = pos + string_length(substr) + 4;
-		str = string_insert("}}",str,pos + string_length(substr));
-		if (tag != -1)
-		{
-			str = string_insert("|",str,pos);
-			str = string_insert(string(tag),str,pos);
-			last_pos += string_length(string(tag)) + 1;
-		}
-		str = string_insert("{{",str,pos);
+		last_pos = pos + string_length(substr) + 2;
+		str = string_insert("*",str,pos + string_length(substr));
+		str = string_insert("*",str,pos);
 	}
 	
 	return str;

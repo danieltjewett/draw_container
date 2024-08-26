@@ -104,7 +104,7 @@ function container_get_lines(data)
 		//show_debug_message(lines);
 		array_push(line.segments, {
 			contents: text_to_draw,
-			tags: data.components[i].tags,
+			emphasis: data.components[i].emphasis,
 			remaining: carryover
 		});
 		

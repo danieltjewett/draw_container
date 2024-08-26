@@ -13,7 +13,7 @@ messages = -1;
 messageLength = 0;
 messageIndex = -1;
 
-currentMessage = "{{1|Chipotle}} is some of the best food in the world.  Did you know that the more {{0|Chipotle}} you eat, the longer you will live?  I have never died yet, and I have eaten so much {{2|Chipotle}}!";
+currentMessage = "*Chipotle* is some of the best food in the world.  Did you know that the more *Chipotle* you eat, the longer you will live?  I have never died yet, and I have eaten so much *Chipotle*!";
 currentMessageLength = string_length(currentMessage);
 
 #endregion
