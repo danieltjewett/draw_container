@@ -53,6 +53,7 @@
     {"name":"draw_container","order":24,"path":"scripts/draw_container/draw_container.yy",},
     {"name":"draw_reset_font_and_color","order":7,"path":"scripts/draw_reset_font_and_color/draw_reset_font_and_color.yy",},
     {"name":"get_button_label_container","order":23,"path":"scripts/get_button_label_container/get_button_label_container.yy",},
+    {"name":"get_component_contents","order":31,"path":"scripts/get_component_contents/get_component_contents.yy",},
     {"name":"get_components","order":27,"path":"scripts/get_components/get_components.yy",},
     {"name":"log","order":3,"path":"scripts/log/log.yy",},
     {"name":"macros","order":1,"path":"scripts/macros/macros.yy",},

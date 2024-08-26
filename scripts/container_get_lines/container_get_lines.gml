@@ -26,7 +26,7 @@ function container_get_lines(data)
 			if (!is_undefined(carryover_prepend))
 			{
 				text_to_draw = carryover_prepend + text_to_draw;
-				carryover_prepend = undefined;	
+				carryover_prepend = undefined;
 			}
 		}
 		else

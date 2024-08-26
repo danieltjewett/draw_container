@@ -535,7 +535,6 @@ function draw_container(data)
 
 					draw_text_ext(startX + width_offset, startY, text_to_draw, data.lineHeight, data.renderWidth);
 				}
-				//draw_text_ext(startX, startY+100+30*line_index+10*i, string(right_width), data.lineHeight, data.renderWidth*2);
 			
 				left_width += string_width(text_to_draw);
 			

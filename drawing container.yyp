@@ -70,6 +70,7 @@
     {"id":{"name":"draw_container","path":"scripts/draw_container/draw_container.yy",},},
     {"id":{"name":"draw_reset_font_and_color","path":"scripts/draw_reset_font_and_color/draw_reset_font_and_color.yy",},},
     {"id":{"name":"get_button_label_container","path":"scripts/get_button_label_container/get_button_label_container.yy",},},
+    {"id":{"name":"get_component_contents","path":"scripts/get_component_contents/get_component_contents.yy",},},
     {"id":{"name":"get_components","path":"scripts/get_components/get_components.yy",},},
     {"id":{"name":"log","path":"scripts/log/log.yy",},},
     {"id":{"name":"macros","path":"scripts/macros/macros.yy",},},
