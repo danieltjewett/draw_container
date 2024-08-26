@@ -64,7 +64,6 @@ function container_get_lines(data)
 					}
 				}
 			}
-			//text_to_draw = string_trim_end(text_to_draw); //TODO revisit if this is necessary with trailing whitespace
 			carryover = string_trim_start(carryover);
 		}
 		

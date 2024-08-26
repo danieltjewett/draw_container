@@ -2,11 +2,7 @@
 /// @param data
 
 function draw_container(data)
-{
-	//TODO fix modules 2, 3, 8 and 9; they have some formatting issues
-	//rework this to be more legible
-	//
-	
+{	
 	var prevAlpha = draw_get_alpha();
 	var prevColor = draw_get_color();
 	
