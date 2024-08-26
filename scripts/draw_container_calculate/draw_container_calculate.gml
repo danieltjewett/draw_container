@@ -2,9 +2,6 @@
 /// @param data
 function draw_container_calculate(data)
 {	
-	//ensure the data is complete
-	//TODO consider removing
-	update_data_with_components(data);
 	
 	//parent section
 	var hasParent = data.parent != -1;
