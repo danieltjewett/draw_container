@@ -7,10 +7,6 @@ function draw_container(data)
 	//rework this to be more legible
 	//
 	
-	var last_decorators = {
-		color: c_orange	
-	}
-	
 	var prevAlpha = draw_get_alpha();
 	var prevColor = draw_get_color();
 	
@@ -41,14 +37,6 @@ function draw_container(data)
 	
 		parentChildren = parent.children;
 		parentChildrenSize = array_length(parentChildren);
-	}
-	//
-	
-	//fill in values if the data is incomplete
-	update_data_with_components(data);
-	if (!struct_exists(data, "len"))
-	{
-		data.len = string_length(data.str);
 	}
 	
 	#region sprite
@@ -482,19 +470,34 @@ function draw_container(data)
 		var left_width = 0;
 		var right_width = line_width;
 		
-		for (var i = 0; i < array_length(lines[line_index].segments); i++) {
+		for (var i = 0; i < array_length(lines[line_index].segments); i++)
+		{
 			
 			var segment = lines[line_index].segments[i];
 			
 			var text_to_draw = segment.contents;
-			//text_to_draw = string_replace_all(text_to_draw," ","_");
 			
 			if (text_to_draw != "")
 			{
 				
 				var size_of_segment = string_width(text_to_draw);
 				right_width -= string_width(text_to_draw);
-				var width_offset = get_width_offset(left_width, right_width);
+				var width_offset;
+				
+				var halign = draw_get_halign();
+	
+				if (halign == fa_right)
+				{
+					width_offset = -right_width;
+				}
+				else if (halign == fa_center)
+				{
+					width_offset = (left_width-right_width)/2;
+				}
+				else
+				{
+					width_offset = left_width; // fa_left or undefined
+				}
 				
 				text_to_draw = string_repeat("\n", line_index) + text_to_draw + string_repeat("\n", (total_lines - line_index));
 				
@@ -521,24 +524,13 @@ function draw_container(data)
 				if (data.textAlpha != 0 && data.computedOpacity != 0)
 				{
 					draw_set_alpha(data.textAlpha * data.computedOpacity);
-					if (array_length(segment.tags) == 0) {
+					if (array_length(segment.tags) == 0)
+					{
 						draw_set_color(data.textColor);
-					} else {
-						
-						for (var tag_index = 0; tag_index < array_length(segment.tags); tag_index++) {
-							var converted_tag_index = segment.tags[tag_index];
-							show_debug_message(converted_tag_index);
-							var tag_number_index = real(converted_tag_index);
-							show_debug_message(text_to_draw + ": " + string(array_length(data.decorators)));
-							if (tag_number_index < array_length(data.decorators)) {
-								show_debug_message(data.decorators[tag_number_index]);
-								last_decorators = data.decorators[tag_number_index];
-							}
-						}
-						
-						if (variable_struct_exists(last_decorators, "color")) {
-							draw_set_color(last_decorators.color);
-						}
+					}
+					else
+					{
+						draw_set_color(data.emphasisColor);
 					}
 
 					draw_text_ext(startX + width_offset, startY, text_to_draw, data.lineHeight, data.renderWidth);
@@ -550,8 +542,6 @@ function draw_container(data)
 			}
 			
 		}
-		
-		show_debug_message(data.decorators);
 		
 	}
 	
@@ -607,12 +597,4 @@ function draw_container(data)
 	}
 
 	#endregion
-}
-
-function get_width_offset(left_width, right_width) {
-	var halign = draw_get_halign();
-	
-	if (halign == fa_right) return -right_width;
-	else if (halign == fa_center) return (left_width-right_width)/2;
-	else return left_width; // fa_left or undefined
 }

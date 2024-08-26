@@ -33,9 +33,7 @@ if (menuSize > 0)
 			shadowAlpha: 1,
 			flow: "split",
 			grid: "row",
-			decorators: [{
-				color: c_blue	
-			}]
+			emphasisColor: c_blue
 		};
 		
 		

@@ -17,7 +17,8 @@
 #macro FOUND_DELIMITER_END 2   // }
 #macro END_TAG 3               // |
 
-function get_components(str) {
+function get_components(str)
+{
 	
 	var components = []
 	var buffer = ""
@@ -28,12 +29,15 @@ function get_components(str) {
 	var brace_depth = 0;
 	var last_state = undefined;
 	var i = 0;
-	while (i < string_length(str)) {
+	while (i < string_length(str))
+	{
 		var skip = false;
 		var char = string_char_at(str,++i);
 		
-		if (last_state == FOUND_DELIMITER_BEGIN) {
-			if (char == "{") {
+		if (last_state == FOUND_DELIMITER_BEGIN)
+		{
+			if (char == "{")
+			{
 				var tags = []
 				array_copy(tags,0,context_chain,0,array_length(context_chain));
 				array_push(components,{contents: buffer, tags: tags});
@@ -45,8 +49,11 @@ function get_components(str) {
 			}
 			if (!skip) buffer += "{"; //add the previous brace unless skipping both
 			last_state = ADD_CHAR;
-		} else if (last_state == FOUND_DELIMITER_END) {
-			if (char == "}" && brace_depth > 0) {
+		}
+		else if (last_state == FOUND_DELIMITER_END)
+		{
+			if (char == "}" && brace_depth > 0)
+			{
 				brace_depth--;
 				allow_tag = false;
 				var tags = []
@@ -59,21 +66,30 @@ function get_components(str) {
 			}
 			if (!skip) buffer += "}"; //add the previous brace unless skipping both
 			last_state = ADD_CHAR;
-		} else {
-			if (char == "{") {
+		}
+		else
+		{
+			if (char == "{")
+			{
 				last_state = FOUND_DELIMITER_BEGIN;
 				skip = true;
-			} else if (char == "}") {
+			}
+			else if (char == "}")
+			{
 				last_state = FOUND_DELIMITER_END;
 				skip = true;
-			} else if (char == "|" && allow_tag) {
+			}
+			else if (char == "|" && allow_tag)
+			{
 				array_pop(context_chain);
 				array_push(context_chain,buffer);
 				buffer = "";
 				allow_tag = false;
 				last_state = END_TAG;
 				skip = true;
-			} else {
+			}
+			else
+			{
 				last_state = ADD_CHAR;
 			}
 		}
@@ -81,8 +97,14 @@ function get_components(str) {
 		if (!skip) buffer += char;
 	}
 	
-	if (last_state == FOUND_DELIMITER_BEGIN) buffer += "{";
-	if (last_state == FOUND_DELIMITER_END) buffer += "}";
+	if (last_state == FOUND_DELIMITER_BEGIN)
+	{
+		buffer += "{";
+	}
+	if (last_state == FOUND_DELIMITER_END)
+	{
+		buffer += "}";
+	}
 	
 	array_push(components,{contents: buffer, tags: context_chain});
 	
@@ -90,11 +112,13 @@ function get_components(str) {
 	
 }
 
-function get_contents(component) {
+function get_contents(component)
+{
 	return component.contents;
 }
 
-function update_data_with_components(data) {
+function update_data_with_components(data)
+{
 	data.components = get_components(data.str);
 	data.plaintext = string_join_ext("", array_map(data.components, get_contents));
 }

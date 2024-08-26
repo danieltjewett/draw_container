@@ -54,14 +54,7 @@ var container = {
 			font: font_Arial10,
 			textAlpha: 1,
 			shadowAlpha: 1,
-			decorators: [
-				{
-					color: c_grey
-				},
-				{
-					color: c_fuchsia
-				}
-			]
+			emphasisColor: c_fuchsia
 		}
 	]
 };

@@ -134,9 +134,9 @@ function draw_container_get_properties(data)
 		data.paddingBottom = data.padding;
 	}
 	
-	if (!variable_struct_exists(data, "decorators"))
+	if (!variable_struct_exists(data, "emphasisColor"))
 	{
-		data.decorators = [];
+		data.emphasisColor = c_orange;
 	}
 	
 	if (!variable_struct_exists(data, "width"))
@@ -293,6 +293,13 @@ function draw_container_get_properties(data)
 	if (!variable_struct_exists(data, "shaderFunc"))
 	{
 		data.shaderFunc = -1;
+	}
+	
+	//fill in values if the data is incomplete
+	update_data_with_components(data);
+	if (!struct_exists(data, "len"))
+	{
+		data.len = string_length(data.str);
 	}
 	
 	if (hasChildren)
