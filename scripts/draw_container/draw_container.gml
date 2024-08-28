@@ -455,7 +455,7 @@ function draw_container(data)
 		
 	draw_set_font(data.font);
 	
-	var lines = container_get_lines(data);
+	var lines = data.useCache ? data.segments : container_get_lines(data);
 	
 	var total_lines = array_length(lines);
 	

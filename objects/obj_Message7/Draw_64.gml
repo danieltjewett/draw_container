@@ -3,15 +3,10 @@
 var xx = obj_Global.GUI_WIDTH * .5;
 var yy = obj_Global.GUI_HEIGHT - 100;
 
-//you can manually send in the modified text, but this doesn't play nice with emphasized text.
-//var text = currentMessage;
-//var index = floor(clamp(characterCounter, 0, currentMessageLength));
-//var printText = string_copy(text, 1, index);
-	
 var textBoxWidth = 500;
 var textBoxHeight = 100;
 
-//
+
 var container = {
 	x: xx,
 	y: yy,

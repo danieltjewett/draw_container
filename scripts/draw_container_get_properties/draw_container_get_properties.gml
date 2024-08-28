@@ -255,6 +255,11 @@ function draw_container_get_properties(data)
 		data.fillAlpha = .8;
 	}
 	
+	if (!variable_struct_exists(data, "useCache"))
+	{
+		data.useCache = false; //whether to use cached lines
+	}
+	
 	if (!variable_struct_exists(data, "radius"))
 	{
 		data.radius = 0;

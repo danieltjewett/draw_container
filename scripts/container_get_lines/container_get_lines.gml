@@ -125,6 +125,9 @@ function container_get_lines(data)
 		lines[line_index].width = last_width;
 	}
 	
+	data.segments = lines;
+	data.useCache = true;
+	
 	return lines;
 	
 }
