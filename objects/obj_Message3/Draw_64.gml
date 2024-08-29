@@ -15,7 +15,7 @@ var str = "Game Over";
 
 var str1 = "Press Start to Continue";
 
-var str2 = component_emphasize("Battle *Tip*:  Taking on enemies that are too *tough* is a good sign that it is too soon to explore an area.", "too", 1);
+var str2 = "Battle *Tip*:  Taking on enemies that are too *tough* is a good sign that it is too soon to explore an area.";
 
 var container = {
 	x: xx,

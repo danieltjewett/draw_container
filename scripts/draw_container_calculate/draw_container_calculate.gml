@@ -2,7 +2,6 @@
 /// @param data
 function draw_container_calculate(data)
 {	
-	
 	//parent section
 	var hasParent = data.parent != -1;
 	//

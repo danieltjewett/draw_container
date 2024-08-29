@@ -455,11 +455,19 @@ function draw_container(data)
 		
 	draw_set_font(data.font);
 	
-	var lines = data.useCache ? data.segments : container_get_lines(data);
+	var lines;
+	if (data.cachedSegmentString == data.str && data.cachedSegmentWidth == data.renderWidth)
+	{
+		lines = data.segments;
+	}
+	else
+	{
+		lines = container_get_lines(data);
+	}
 	
 	var total_lines = array_length(lines);
-	
-	for (var line_index = 0; line_index < array_length(lines); line_index++)
+	 
+	for (var line_index = 0; line_index < total_lines; line_index++)
 	{
 		
 		var line_width = lines[line_index].width;
@@ -480,13 +488,11 @@ function draw_container(data)
 				right_width -= string_width(text_to_draw);
 				var width_offset;
 				
-				var halign = draw_get_halign();
-	
-				if (halign == fa_right)
+				if (data.hAlign == fa_right)
 				{
 					width_offset = -right_width;
 				}
-				else if (halign == fa_center)
+				else if (data.hAlign == fa_center)
 				{
 					width_offset = (left_width-right_width)/2;
 				}

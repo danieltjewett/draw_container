@@ -45,7 +45,7 @@ if (menuSize > 0)
 		if (menuIndex == i)
 		{
 			menuItemContainer.fillColor = c_fuchsia;
-			menuItemContainer.str = component_emphasize(menuItemContainer.str);
+			menuItemContainer.str = menuItemContainer.str;
 			button = get_button_label_container("B", 0, .7, 1);
 		}
 		else if (i + 1 == menuSize)

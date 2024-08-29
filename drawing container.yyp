@@ -59,7 +59,6 @@
     {"id":{"name":"room_message7","path":"rooms/room_message7/room_message7.yy",},},
     {"id":{"name":"room_message8","path":"rooms/room_message8/room_message8.yy",},},
     {"id":{"name":"room_message9","path":"rooms/room_message9/room_message9.yy",},},
-    {"id":{"name":"component_emphasize","path":"scripts/component_emphasize/component_emphasize.yy",},},
     {"id":{"name":"container_get_height_percent","path":"scripts/container_get_height_percent/container_get_height_percent.yy",},},
     {"id":{"name":"container_get_height","path":"scripts/container_get_height/container_get_height.yy",},},
     {"id":{"name":"container_get_lines","path":"scripts/container_get_lines/container_get_lines.yy",},},

@@ -6,7 +6,7 @@ var yy = obj_Global.GUI_HEIGHT * .25;
 var width = 444;
 
 var container = {
-	str: component_emphasize("You can't carry any more shields.", "shields"),
+	str: "You can't carry any more shields.",
 	x: xx,
 	y: yy,
 	fillAlpha: .7,
