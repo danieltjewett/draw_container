@@ -456,7 +456,10 @@ function draw_container(data)
 	draw_set_font(data.font);
 	
 	var lines;
-	if (data.cachedSegmentString == data.str && data.cachedSegmentWidth == data.renderWidth)
+	if (data.cachedString == data.str &&
+		data.cachedWidth == data.renderWidth &&
+		data.cachedLength == data.len &&
+		struct_exists(data, "segments"))
 	{
 		lines = data.segments;
 	}
@@ -598,4 +601,9 @@ function draw_container(data)
 	}
 
 	#endregion
+	
+	data.cachedString = data.str;
+	data.cachedWidth = data.renderWidth;
+	data.cachedLength = data.len;
+	
 }

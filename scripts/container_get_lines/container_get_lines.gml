@@ -124,8 +124,6 @@ function container_get_lines(data)
 	}
 	
 	data.segments = lines;
-	data.cachedSegmentString = data.str;
-	data.cachedSegmentWidth = data.renderWidth;
 	
 	return lines;
 	

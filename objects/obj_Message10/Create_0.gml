@@ -6,6 +6,7 @@ container = {
 	textAlpha: 0,
 	shadowAlpha: 0,
 	padding: 8,
+	len: 0,
 };
 
 _image_alpha = 0;

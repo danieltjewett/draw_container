@@ -255,25 +255,22 @@ function draw_container_get_properties(data)
 		data.fillAlpha = .8;
 	}
 	
-	if (!variable_struct_exists(data, "cachedSegmentString"))
+	//define the cached string/width/length (used to see if they are the changed for some calculations)
+	if (!variable_struct_exists(data, "cachedString"))
 	{
-		data.cachedSegmentString = undefined; //whether to use cached lines
+		data.cachedString = undefined;
 	}
 	
-	if (!variable_struct_exists(data, "cachedSegmentWidth"))
+	if (!variable_struct_exists(data, "cachedWidth"))
 	{
-		data.cachedSegmentWidth = undefined; //whether to use cached lines
+		data.cachedWidth = undefined;
 	}
 	
-	if (!variable_struct_exists(data, "cachedComponentString"))
+	if (!variable_struct_exists(data, "cachedLength"))
 	{
-		data.cachedComponentString = undefined; //whether to use cached lines
+		data.cachedLength = undefined;
 	}
 	
-	if (!variable_struct_exists(data, "cachedComponentWidth"))
-	{
-		data.cachedComponentWidth = undefined; //whether to use cached lines
-	}
 	
 	if (!variable_struct_exists(data, "radius"))
 	{
