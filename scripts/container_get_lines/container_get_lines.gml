@@ -1,5 +1,5 @@
 // Breaks the text to be displayed into lines consisting of segments; used to display items correctly when middle-aligned or right-aligned
-function container_get_lines(data)
+function container_get_lines(data, get_blank_lines = true)
 {
 	
 	//a list of components. actual components are not stored here; instead, a list of segments are.
@@ -8,26 +8,43 @@ function container_get_lines(data)
 	
 	var line_index = 0;
 	
-	var carryover = undefined;
-	var carryover_prepend = undefined;
+	var carryover = undefined; //text to put onto the next line by calculation
+	var carryover_prepend = undefined; //text to put at the beginning of the next segment (whitespace)
+	var forced_to_newline = undefined; //text immediately after a \n character
 	
-	var characters_remaining = data.len;
+	var characters_remaining = data.len; //limit on how many characters can be drawn at once
 	var hit_character_limit = false;
 	
 	var last_width = 0;
 	
 	var numComponents = array_length(data.components)
-	for (var i = 0; i < numComponents && !hit_character_limit;)
+	for (var i = 0; i < numComponents && (get_blank_lines || !hit_character_limit);)
 	{
 		
 		var text_to_draw;
 		if (is_undefined(carryover)) //If this is the start of a new component, try to print all of its contents
 		{
-			text_to_draw = data.components[i].contents;
-			if (!is_undefined(carryover_prepend))
+			if (!is_undefined(forced_to_newline))
 			{
-				text_to_draw = carryover_prepend + text_to_draw;
-				carryover_prepend = undefined;
+				text_to_draw = forced_to_newline;
+				forced_to_newline = undefined;
+				if (!get_blank_lines) characters_remaining--;
+			}
+			else
+			{
+				text_to_draw = data.components[i].contents;
+				if (!is_undefined(carryover_prepend))
+				{
+					text_to_draw = carryover_prepend + text_to_draw;
+					carryover_prepend = undefined;
+				}
+			}
+			
+			if (string_pos("\n", text_to_draw) != 0)
+			{
+				var split_text = string_split(text_to_draw,"\n",false,1)
+				text_to_draw = split_text[0];
+				forced_to_newline = split_text[1];
 			}
 		}
 		else //If a previous component wasn't able to draw all of its components, try to print all that remains
@@ -105,7 +122,7 @@ function container_get_lines(data)
 			remaining: carryover
 		});
 		
-		if (!is_undefined(carryover))
+		if (!is_undefined(carryover) || !is_undefined(forced_to_newline))
 		{ // includes blank carryover, for when a new component is also a new line, but a space separates them
 			lines[line_index].width = last_width;
 			line_index++;
