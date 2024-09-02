@@ -14,7 +14,7 @@ function draw_container_get_properties(data)
 	}
 	else
 	{
-		data.children = [];	
+		data.children = [];
 	}
 	//
 	
@@ -134,6 +134,11 @@ function draw_container_get_properties(data)
 		data.paddingBottom = data.padding;
 	}
 	
+	if (!variable_struct_exists(data, "emphasisColor"))
+	{
+		data.emphasisColor = c_orange;
+	}
+	
 	if (!variable_struct_exists(data, "width"))
 	{
 		data.width = -1;
@@ -250,6 +255,23 @@ function draw_container_get_properties(data)
 		data.fillAlpha = .8;
 	}
 	
+	//define the cached string/width/length (used to see if they are the changed for some calculations)
+	if (!variable_struct_exists(data, "cachedString"))
+	{
+		data.cachedString = undefined;
+	}
+	
+	if (!variable_struct_exists(data, "cachedWidth"))
+	{
+		data.cachedWidth = undefined;
+	}
+	
+	if (!variable_struct_exists(data, "cachedLength"))
+	{
+		data.cachedLength = undefined;
+	}
+	
+	
 	if (!variable_struct_exists(data, "radius"))
 	{
 		data.radius = 0;
@@ -288,6 +310,13 @@ function draw_container_get_properties(data)
 	if (!variable_struct_exists(data, "shaderFunc"))
 	{
 		data.shaderFunc = -1;
+	}
+	
+	//fill in values if the data is incomplete
+	update_data_with_components(data);
+	if (!struct_exists(data, "len"))
+	{
+		data.len = string_length(data.str);
 	}
 	
 	if (hasChildren)

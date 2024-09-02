@@ -23,7 +23,7 @@ var container = {
 container.children = [];
 	
 	array_push(container.children, {
-		str: "Open Inventory",
+		str: "*Open Inventory*",
 		textAlpha: 1,
 		shadowAlpha: 1,
 		font: font_Arial10,

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"log",
+  "%Name":"update_data_with_components",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"log",
+  "name":"update_data_with_components",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

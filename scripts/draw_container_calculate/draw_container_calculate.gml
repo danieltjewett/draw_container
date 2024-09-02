@@ -27,7 +27,7 @@ function draw_container_calculate(data)
 
 	#region strWidth
 
-	data.strWidth = string_width(data.str);
+	data.strWidth = string_width(data.plaintext);
 
 	#endregion
 	#region strHeight
@@ -39,7 +39,7 @@ function draw_container_calculate(data)
 	
 	var current = data;
 	
-	if (data.str != "")
+	if (data.plaintext != "")
 	{
 		//walk up the parent to find a width to base computed height around
 		while (current != -1 && width == 0)
@@ -75,7 +75,7 @@ function draw_container_calculate(data)
 		width -= data.marginLeft + data.marginLeft + padding;
 	}
 	
-	data.strHeight = string_height_ext(data.str, data.lineHeight, width);
+	data.strHeight = string_height_ext(data.plaintext, data.lineHeight, width);
 
 	#endregion
 	#region computed width

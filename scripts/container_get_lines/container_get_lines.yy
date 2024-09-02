@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"log",
+  "%Name":"container_get_lines",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"log",
+  "name":"container_get_lines",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

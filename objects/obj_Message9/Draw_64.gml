@@ -1,6 +1,12 @@
 //repeat (1000)
 //{
 
+frameLoop += 1
+if (frameLoop == 3) {
+	frameLoop = 0;
+	len++;
+}
+
 //
 var data = {
 	x: 550,
@@ -93,13 +99,14 @@ var data = {
 	children: [
 		{
 			name: "col1",
-			str: "I am getting so sick of this not working.  My neck is sore and I should go to bed, since I have to work tomorrow.",
+			str: "I am getting so *sick* of this not working.  My neck is *sore* and I should go to bed, since I have to work *tomorrow.*",
 			fillAlpha: .5,
 			fillColor: c_red,
 			padding: 10,
 			marginBottom: 10,
 			hAlign: fa_right,
 			vAlign: fa_bottom,
+			emphasisColor: c_red
 		},
 		{
 			name: "col2",
@@ -147,13 +154,14 @@ var data = {
 	grid: "row",
 	children: [
 		{
-			str: "This is so much fun!  I just love it when it works correctly.",
+			str: "*This* is so much fun!\n\n*I just love* it when it works correctly.",
 			fillAlpha: .5,
 			fillColor: c_red,
 			paddingRight: 10,
 			marginLeft: 10,
 			hAlign: fa_right,
 			vAlign: fa_bottom,
+			len
 		},
 		{
 			str: "Done",
