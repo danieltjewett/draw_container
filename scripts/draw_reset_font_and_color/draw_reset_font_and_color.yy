@@ -1,5 +1,5 @@
 {
-  "$GMScript":"v1",
+  "$GMScript":"",
   "%Name":"draw_reset_font_and_color",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,81 +1,142 @@
-// Breaks the text to be displayed into lines consisting of segments; used to display items correctly when middle-aligned or right-aligned
-function container_get_lines(data, get_blank_lines = true)
+/// @description container_get_lines(data) Breaks the text to be displayed into lines consisting of segments; used to display items correctly when middle-aligned or right-aligned
+/// @param data
+function container_get_lines(data)
 {
+	#region parse for * and get the components
+	
+	var components = [];
+	var buffer = "";
+	var emphasisFlag = false;
+	
+	var strLength = string_length(data.str);
+	for (var i=1; i<=strLength; i++)
+	{
+		var char = string_char_at(data.str, i);
+		
+		if (char == "*")
+		{
+			array_push(components, {
+				contents: buffer,
+				emphasis: emphasisFlag,
+			});
+			emphasisFlag = !emphasisFlag;
+			buffer = "";
+		}
+		else
+		{
+			buffer += char;
+		}
+	}
+	
+	if (emphasisFlag)
+	{
+		throw "Unclosed '*'";
+	}
+	
+	array_push(components, {
+		contents: buffer,
+		emphasis: emphasisFlag,
+	});
+	
+	#endregion
+	#region get the lines
+	
+	//clean up lines, if they already exist
+	if (variable_struct_exists(data, "lines"))
+	{
+		delete data.lines;
+	}
 	
 	//a list of components. actual components are not stored here; instead, a list of segments are.
 	//segments contain: a string of text; the line of this string; the width before this; the width after this.
-	var lines = [];
+	data.lines = [];
 	
-	var line_index = 0;
+	var lineIndex = 0;
 	
 	var carryover = undefined; //text to put onto the next line by calculation
-	var carryover_prepend = undefined; //text to put at the beginning of the next segment (whitespace)
-	var forced_to_newline = undefined; //text immediately after a \n character
+	var carryoverPrepend = undefined; //text to put at the beginning of the next segment (whitespace)
+	var forcedToNewline = undefined; //text immediately after a \n character
 	
-	var characters_remaining = data.len; //limit on how many characters can be drawn at once
-	var hit_character_limit = false;
+	var charactersRemaining = data.typewriterLength == undefined ? string_length(data.str) : data.typewriterLength; //limit on how many characters can be drawn at once
+	var hitCharacterLimit = false;
 	
-	var last_width = 0;
+	var lastWidth = 0;
 	
-	var numComponents = array_length(data.components)
-	for (var i = 0; i < numComponents && (get_blank_lines || !hit_character_limit);)
+	var numComponents = array_length(components)
+	for (var i=0; i<numComponents && !hitCharacterLimit;)
 	{
-		
-		var text_to_draw;
+		var textToDraw;
 		if (is_undefined(carryover)) //If this is the start of a new component, try to print all of its contents
 		{
-			if (!is_undefined(forced_to_newline))
+			if (!is_undefined(forcedToNewline))
 			{
-				text_to_draw = forced_to_newline;
-				forced_to_newline = undefined;
-				if (!get_blank_lines) characters_remaining--;
+				textToDraw = forcedToNewline;
+				forcedToNewline = undefined;
 			}
 			else
 			{
-				text_to_draw = data.components[i].contents;
-				if (!is_undefined(carryover_prepend))
+				textToDraw = components[i].contents;
+				if (!is_undefined(carryoverPrepend))
 				{
-					text_to_draw = carryover_prepend + text_to_draw;
-					carryover_prepend = undefined;
+					textToDraw = carryoverPrepend + textToDraw;
+					carryoverPrepend = undefined;
 				}
 			}
 			
-			if (string_pos("\n", text_to_draw) != 0)
+			if (string_pos("\n", textToDraw) != 0)
 			{
-				var split_text = string_split(text_to_draw,"\n",false,1)
-				text_to_draw = split_text[0];
-				forced_to_newline = split_text[1];
+				var splitText = string_split(textToDraw, "\n", false, 1);
+				textToDraw = splitText[0];
+				forcedToNewline = splitText[1];
+				delete splitText;
 			}
 		}
-		else //If a previous component wasn't able to draw all of its components, try to print all that remains
+		else //if a previous component wasn't able to draw all of its components, try to print all that remains
 		{
-			text_to_draw = carryover;
+			textToDraw = carryover;
 			carryover = undefined;
 		}
 		
-		if (string_width(text_to_draw) > data.renderWidth - last_width)
+		var strLength = string_length(textToDraw);
+		var textToDrawWidth = string_width(textToDraw);
+		if (textToDrawWidth > data.renderWidth - lastWidth)
 		{
 			carryover = "";
-			var last_char = "";
-			while ((string_width(text_to_draw) > data.renderWidth - last_width || last_char != " ") && string_length(text_to_draw) > 0)
-			{ //break up the component into a smaller segment, character by character, until a space is reached
-				last_char = string_char_at(text_to_draw, string_length(text_to_draw));
-				carryover = last_char + carryover;
-				text_to_draw = string_delete(text_to_draw,string_length(text_to_draw),1);
+			var lastChar = "";
+			
+			//break up the component into a smaller segment, character by character, until a space is reached
+			while ((textToDrawWidth > data.renderWidth - lastWidth || lastChar != " ") && strLength > 0)
+			{ 
+				lastChar = string_char_at(textToDraw, strLength);
+				carryover = lastChar + carryover;
+				textToDraw = string_delete(textToDraw, strLength, 1);
+				textToDrawWidth = string_width(textToDraw);
+				strLength --;
 			}
-			if (string_length(text_to_draw) == 0 && last_width == 0)
-			{ //if a single, long word is breaking apart the string display ('He believes in / Antidisestablishmentarianism', with enough room for only 20 characters)
-				text_to_draw = carryover;
+			
+			//if a single, long word is breaking apart the string display ('He believes in / Antidisestablishmentarianism', with enough room for only 20 characters)
+			if (strLength == 0 && lastWidth == 0)
+			{
+				textToDraw = carryover;
 				carryover = "";
-				while ((string_width(text_to_draw) > data.renderWidth - last_width) && string_length(text_to_draw) > 0)
-				{ //similar process, but split the word in half, rather than neatly at the beginning or end of a word
-					last_char = string_char_at(text_to_draw, string_length(text_to_draw));
-					carryover = last_char + carryover;
-					text_to_draw = string_delete(text_to_draw,string_length(text_to_draw),1);
+				
+				textToDrawWidth = string_width(textToDraw);
+				strLength = string_length(textToDraw);
+				
+				//similar process, but split the word in half, rather than neatly at the beginning or end of a word
+				while ((textToDrawWidth > data.renderWidth - lastWidth) && strLength > 0)
+				{
+					lastChar = string_char_at(textToDraw, strLength);
+					carryover = lastChar + carryover;
+					textToDraw = string_delete(textToDraw, strLength, 1);
+					textToDrawWidth = string_width(textToDraw);
+					strLength --;
 				}
-				if (string_length(text_to_draw) == 0)
-				{ //if a single character is still bleeding over the width, just render the whole string as a single line; nothing is going to work
-					text_to_draw = carryover;
+				
+				//if a single character is still bleeding over the width, just render the whole string as a single line; nothing is going to work
+				if (strLength == 0)
+				{ 
+					textToDraw = carryover;
 					carryover = "";
 				}
 			}
@@ -83,65 +144,71 @@ function container_get_lines(data, get_blank_lines = true)
 		}
 		
 		//move whitespace to the next component, so that it can decide whether to keep it or not
-		if (string_ends_with(text_to_draw, " "))
+		if (string_ends_with(textToDraw, " "))
 		{
-			carryover_prepend = "";
-			while (string_ends_with(text_to_draw, " "))
+			carryoverPrepend = "";
+			while (string_ends_with(textToDraw, " "))
 			{
-				carryover_prepend += " ";
-				text_to_draw = string_delete(text_to_draw,string_length(text_to_draw),1);
+				carryoverPrepend += " ";
+				textToDraw = string_delete(textToDraw, strLength, 1);
+				strLength --;
 			}
+			textToDrawWidth = string_width(textToDraw);
 		}
 		
-		if (string_length(text_to_draw) > characters_remaining)
+		if (strLength > charactersRemaining)
 		{
-			text_to_draw = string_copy(text_to_draw,0,characters_remaining);
-			characters_remaining = 0;
+			textToDraw = string_copy(textToDraw, 0, charactersRemaining);
+			textToDrawWidth = string_width(textToDraw);
+			charactersRemaining = 0;
 		}
 		else
 		{
-			characters_remaining -= string_length(text_to_draw);
+			charactersRemaining -= strLength;
 		}
-		if (characters_remaining <= 0) hit_character_limit = true;
 		
-		while (array_length(lines) <= line_index)
+		if (charactersRemaining <= 0)
 		{
-			array_push(lines, {
+			hitCharacterLimit = true;
+		}
+		
+		while (array_length(data.lines) <= lineIndex)
+		{
+			array_push(data.lines, {
 				width: 0,
-				segments: []
+				segments: [],
 			});
 		}
 		
-		last_width += string_width(text_to_draw);
+		lastWidth += textToDrawWidth;
 		
-		var line = lines[line_index];
-		//show_debug_message(lines);
+		var line = data.lines[lineIndex];
 		array_push(line.segments, {
-			contents: text_to_draw,
-			emphasis: data.components[i].emphasis,
-			remaining: carryover
+			contents: textToDraw,
+			emphasis: components[i].emphasis,
+			remaining: carryover,
+			width: textToDrawWidth,
 		});
 		
-		if (!is_undefined(carryover) || !is_undefined(forced_to_newline))
-		{ // includes blank carryover, for when a new component is also a new line, but a space separates them
-			lines[line_index].width = last_width;
-			line_index++;
-			last_width = 0;
+		//includes blank carryover, for when a new component is also a new line, but a space separates them
+		if (!is_undefined(carryover) || !is_undefined(forcedToNewline))
+		{
+			data.lines[lineIndex].width = lastWidth;
+			lineIndex++;
+			lastWidth = 0;
 		}
 		else
 		{
 			i++;	
 		}
-		
 	}
 	
-	if (line_index < array_length(lines))
+	if (lineIndex < array_length(data.lines))
 	{
-		lines[line_index].width = last_width;
+		data.lines[lineIndex].width = lastWidth;
 	}
 	
-	data.segments = lines;
+	delete components;
 	
-	return lines;
-	
+	#endregion
 }

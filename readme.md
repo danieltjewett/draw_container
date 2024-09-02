@@ -32,7 +32,8 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 * `width` - the width of the "content" (not including `marginLeft`, `marginRight`, `paddingLeft`, `paddingRight`).  If no width is specified, rules of flow will be applied.  Widths > 0 and <= 1 will calculate itself based on a percentage of the parent width and `marginLeft`, `marginRight`, `paddingLeft`, `paddingRight` will be subtracted after width has been computed.  If the text content is larger than the width, line wrapping will automatically be applied.
 * `height` - the height of the "content" (not including `marginTop`, `marginBottom`, `paddingTop`, `paddingBottom`).  If no height is specified, rules of flow will be applied.  Heights > 0 and <= 1 will calulcate itself based on a perentage of the parent height and `marginTop`, `marginBottom`, `paddingTop`, `paddingBottom` will be subtracted after height has been computed.  If the text content is larger than the height, the text will overflow.
 * `requireFull` - defaults to `true`.  When the option is true, the sum of the children's width (when `grid` is row) or height (when `grid` is column) must be equal to its parent.  When this option is false, it is not necessary for the children's width and height to "match" the parent's width or height.
-* `str` - defaults to `""`.  The "content", or the actual text we want to draw.
+* `str` - defaults to `""`.  The "content", or the actual text we want to draw.  Str can contain `*` characters for inline emphasis.  See `emphasisColor`.
+* `typewriterLength` - if using a "typewriter" effect (i.e. printing one character at a time), we need to pass the current length of the type writer string (i.e. the substr index) in order for `*` characters to not throw a `Unclosed '*'` error.
 * `font` - defaults to `font_Arial8`.  The font we want to render our `str` with.
 * `lineHeight` - defaults to `-1`.  The spacing between lines of the content.  See `sep` argument at https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/strings/string_height_ext.html
 * `hAnchor` - defaults to `fa_center`.  Anchors the container on a horizontal side.  `fa_center` won't do anything, where `fa_left` will anchor content on the left, while `fa_right` will anchor content on the right.
@@ -51,6 +52,7 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 * `fillAlpha` - defaults to `0`.  The alpha of the background to be used.
 * `radius` - defaults to `0`.  The radius of the background color.  If `-1` is used, the radius will be automatically calculated based on the size of the container.
 * `textColor` - defaults to `c_white`.  The color to draw the text with.
+* `emphasisColor` - defaults to `c_orange`.  The color to draw the emphasis text with.  Strings that are surrounded by `*` characters will be ephasized with this color.
 * `textAlpha` - defaults to `1`.  The alpha to draw the text color at.
 * `shadowColor` - defaults to `c_black`.  The shadow color to draw the text with.
 * `shadowAlpha` - defaults to `1`.  The alpha to draw the shadow color at.
@@ -61,7 +63,12 @@ To use, simply call `draw_container(data)`.  A list of the available properties 
 ###### INTERNAL PROPERTIES
   
 * `parent` - pointer to the parent container.
-* `computedOpacity` - the multiplier opacity to be used on conjuncture with *_alphas
+* `computedOpacity` - the multiplier opacity to be used on conjuncture with *_alphas.
+* `plainText` - a version of `str`, without the `*`.
+* `cachedString` - we store the previous version of `str` and only recompute `container_get_lines` when `str` is different than this value.
+* `cachedWidth` - we store the previous version of `renderWidth` (see below) and only recompute `container_get_lines` when `renderWidth` is different than this value.
+* `cachedTypewriterLength` - we store the previous version of `typewriterLength` and only recompute `container_get_lines` when `typewriterLength` is different than this value.
+* `lines` - contains all of the strings segements / components, broken apart by `*`, for rendering.
 * `widthPercent` - the width of the container as a percentage.
 * `heightPercent` - the height of the container as a percentage.
 * `strWidth` - See https://docs2.yoyogames.com/source/_build/3_scripting/4_gml_reference/strings/string_width.html for more details.  Used in computing the width of a container.

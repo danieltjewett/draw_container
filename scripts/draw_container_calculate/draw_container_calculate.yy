@@ -1,5 +1,5 @@
 {
-  "$GMScript":"v1",
+  "$GMScript":"",
   "%Name":"draw_container_calculate",
   "isCompatibility":false,
   "isDnD":false,

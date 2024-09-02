@@ -1,5 +1,5 @@
 {
-  "$GMScript":"v1",
+  "$GMScript":"",
   "%Name":"container_get_height_percent",
   "isCompatibility":false,
   "isDnD":false,

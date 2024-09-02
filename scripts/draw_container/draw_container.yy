@@ -1,5 +1,5 @@
 {
-  "$GMScript":"v1",
+  "$GMScript":"",
   "%Name":"draw_container",
   "isCompatibility":false,
   "isDnD":false,

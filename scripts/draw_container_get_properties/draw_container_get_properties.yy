@@ -1,5 +1,5 @@
 {
-  "$GMScript":"v1",
+  "$GMScript":"",
   "%Name":"draw_container_get_properties",
   "isCompatibility":false,
   "isDnD":false,
