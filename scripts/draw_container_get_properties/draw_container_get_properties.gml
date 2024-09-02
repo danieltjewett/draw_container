@@ -264,7 +264,7 @@ function draw_container_get_properties(data)
 	}
 	else if (data.fillAlpha == -1)
 	{
-		data.fillAlpha = HELPER_DIALOG_ALPHA;
+		data.fillAlpha = .8;
 	}
 	
 	if (!variable_struct_exists(data, "radius"))
