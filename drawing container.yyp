@@ -29,7 +29,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.6.2.162",
+    "IDEVersion":"2024.2.0.132",
   },
   "name":"drawing container",
   "resources":[
@@ -69,11 +69,9 @@
     {"id":{"name":"draw_container","path":"scripts/draw_container/draw_container.yy",},},
     {"id":{"name":"draw_reset_font_and_color","path":"scripts/draw_reset_font_and_color/draw_reset_font_and_color.yy",},},
     {"id":{"name":"get_button_label_container","path":"scripts/get_button_label_container/get_button_label_container.yy",},},
-    {"id":{"name":"get_components","path":"scripts/get_components/get_components.yy",},},
     {"id":{"name":"log","path":"scripts/log/log.yy",},},
     {"id":{"name":"macros","path":"scripts/macros/macros.yy",},},
     {"id":{"name":"magnitude","path":"scripts/magnitude/magnitude.yy",},},
-    {"id":{"name":"update_data_with_components","path":"scripts/update_data_with_components/update_data_with_components.yy",},},
     {"id":{"name":"spr_arrow","path":"sprites/spr_arrow/spr_arrow.yy",},},
     {"id":{"name":"spr_backdrop","path":"sprites/spr_backdrop/spr_backdrop.yy",},},
     {"id":{"name":"spr_Portrait","path":"sprites/spr_Portrait/spr_Portrait.yy",},},

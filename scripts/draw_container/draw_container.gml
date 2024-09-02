@@ -1,8 +1,7 @@
 /// @description draw_container(data) See documenation at https://github.com/danieltjewett/draw_container
 /// @param data
-
 function draw_container(data)
-{	
+{
 	var prevAlpha = draw_get_alpha();
 	var prevColor = draw_get_color();
 	
@@ -34,6 +33,7 @@ function draw_container(data)
 		parentChildren = parent.children;
 		parentChildrenSize = array_length(parentChildren);
 	}
+	//
 	
 	#region sprite
 
@@ -449,104 +449,104 @@ function draw_container(data)
 			data.imageAlpha * data.computedOpacity
 		);
 	}
-			
-	draw_set_halign(data.hAlign);
-	draw_set_valign(data.vAlign);
+
+	if (data.str != "")
+	{
+		draw_set_halign(data.hAlign);
+		draw_set_valign(data.vAlign);
 		
-	draw_set_font(data.font);
+		draw_set_font(data.font);
 	
-	var lines;
-	if (data.cachedString == data.str &&
-		data.cachedWidth == data.renderWidth &&
-		data.cachedLength == data.len &&
-		struct_exists(data, "segments"))
-	{
-		lines = data.segments;
-	}
-	else
-	{
-		lines = container_get_lines(data);
-	}
-	
-	var total_lines = array_length(lines);
-	 
-	for (var line_index = 0; line_index < total_lines; line_index++)
-	{
-		
-		var line_width = lines[line_index].width;
-		var left_width = 0;
-		var right_width = line_width;
-		
-		for (var i = 0; i < array_length(lines[line_index].segments); i++)
+		//refetch the data if we've updated str from the outside, or the width
+		if (data.cachedString != data.str || data.cachedWidth != data.renderWidth || data.cachedTypewriterLength != data.typewriterLength)
 		{
+			container_get_lines(data);
+		}
+
+		var newLineAccumulatorPre = "";
+		var linesLength = array_length(data.lines);
+		for (var lineIndex=0; lineIndex<linesLength; lineIndex++)
+		{
+			var line = data.lines[lineIndex];
 			
-			var segment = lines[line_index].segments[i];
-			
-			var text_to_draw = segment.contents;
-			
-			if (text_to_draw != "")
+			var lineWidth = line.width;
+			var leftWidth = 0;
+			var rightWidth = lineWidth;
+		
+			var newLinePost = string_repeat("\n", (linesLength - lineIndex));
+			var segmentsLength = array_length(line.segments);
+			for (var i=0; i<segmentsLength; i++)
 			{
-				
-				var size_of_segment = string_width(text_to_draw);
-				right_width -= string_width(text_to_draw);
-				var width_offset;
-				
-				if (data.hAlign == fa_right)
-				{
-					width_offset = -right_width;
-				}
-				else if (data.hAlign == fa_center)
-				{
-					width_offset = (left_width-right_width)/2;
-				}
-				else
-				{
-					width_offset = left_width; // fa_left or undefined
-				}
-				
-				text_to_draw = string_repeat("\n", line_index) + text_to_draw + string_repeat("\n", (total_lines - line_index));
-				
-				if (data.shadowAlpha != 0 && data.computedOpacity != 0)
-				{
-					draw_set_alpha(data.shadowAlpha * data.computedOpacity);
-					draw_set_color(data.shadowColor);
+				var segment = line.segments[i];
 			
-					//TODO wonky fade outs with all of these shadows
+				var textToDraw = segment.contents;
+				var textToDrawWidth = segment.width;
 			
-					//thin perp shadows
-					draw_text_ext(startX + width_offset - 1, startY, text_to_draw, data.lineHeight, data.renderWidth);
-					draw_text_ext(startX + width_offset + 1, startY, text_to_draw, data.lineHeight, data.renderWidth);
-					draw_text_ext(startX + width_offset, startY - 1, text_to_draw, data.lineHeight, data.renderWidth);
-					draw_text_ext(startX + width_offset, startY + 1, text_to_draw, data.lineHeight, data.renderWidth);
-			
-					//diag thicker shadows
-					draw_text_ext(startX - 1 + width_offset, startY - 1, text_to_draw, data.lineHeight, data.renderWidth);
-					draw_text_ext(startX - 1 + width_offset, startY + 1, text_to_draw, data.lineHeight, data.renderWidth);
-					draw_text_ext(startX + 1 + width_offset, startY - 1, text_to_draw, data.lineHeight, data.renderWidth);
-					draw_text_ext(startX + 1 + width_offset, startY + 1, text_to_draw, data.lineHeight, data.renderWidth);
-				}
-
-				if (data.textAlpha != 0 && data.computedOpacity != 0)
+				if (textToDraw != "")
 				{
-					draw_set_alpha(data.textAlpha * data.computedOpacity);
-					if (segment.emphasis)
+					rightWidth -= textToDrawWidth;
+					var widthOffset;
+				
+					switch (data.hAlign)
 					{
-						draw_set_color(data.emphasisColor);
+						case fa_left:
+							widthOffset = leftWidth;
+							break;
+		
+						case fa_center:
+							widthOffset = (leftWidth - rightWidth) * .5;
+							break;
+		
+						case fa_right:
+							widthOffset = -rightWidth;
+							break;
 					}
-					else
+				
+					//clever way to get the lines to be in the same spot as they were before the inline feature
+					//makes us not have to recompute a bunch of math of draw_container
+					textToDraw = newLineAccumulatorPre + textToDraw + newLinePost;
+				
+					if (data.shadowAlpha != 0 && data.computedOpacity != 0)
 					{
-						draw_set_color(data.textColor);
+						draw_set_alpha(data.shadowAlpha * data.computedOpacity);
+						draw_set_color(data.shadowColor);
+			
+						//TODO wonky fade outs with all of these shadows
+			
+						//thin perp shadows
+						draw_text_ext(startX + widthOffset - 1, startY, textToDraw, data.lineHeight, data.renderWidth);
+						draw_text_ext(startX + widthOffset + 1, startY, textToDraw, data.lineHeight, data.renderWidth);
+						draw_text_ext(startX + widthOffset, startY - 1, textToDraw, data.lineHeight, data.renderWidth);
+						draw_text_ext(startX + widthOffset, startY + 1, textToDraw, data.lineHeight, data.renderWidth);
+			
+						//diag thicker shadows
+						draw_text_ext(startX - 1 + widthOffset, startY - 1, textToDraw, data.lineHeight, data.renderWidth);
+						draw_text_ext(startX - 1 + widthOffset, startY + 1, textToDraw, data.lineHeight, data.renderWidth);
+						draw_text_ext(startX + 1 + widthOffset, startY - 1, textToDraw, data.lineHeight, data.renderWidth);
+						draw_text_ext(startX + 1 + widthOffset, startY + 1, textToDraw, data.lineHeight, data.renderWidth);
 					}
 
-					draw_text_ext(startX + width_offset, startY, text_to_draw, data.lineHeight, data.renderWidth);
+					if (data.textAlpha != 0 && data.computedOpacity != 0)
+					{
+						draw_set_alpha(data.textAlpha * data.computedOpacity);
+						if (segment.emphasis)
+						{
+							draw_set_color(data.emphasisColor);
+						}
+						else
+						{
+							draw_set_color(data.textColor);
+						}
+
+						draw_text_ext(startX + widthOffset, startY, textToDraw, data.lineHeight, data.renderWidth);
+					}
+			
+					leftWidth += textToDrawWidth;
 				}
-			
-				left_width += string_width(text_to_draw);
-			
 			}
 			
+			newLineAccumulatorPre += "\n";
 		}
-		
 	}
 	
 	if (data.shaderFunc != -1)
@@ -559,6 +559,13 @@ function draw_container(data)
 	draw_set_color(prevColor);
 	draw_set_alpha(prevAlpha);
 
+	#endregion
+	#region cache
+	
+	data.cachedString = data.str;
+	data.cachedWidth = data.renderWidth;
+	data.cachedTypewriterLength = data.typewriterLength;
+	
 	#endregion
 	#region recurse
 
@@ -601,9 +608,4 @@ function draw_container(data)
 	}
 
 	#endregion
-	
-	data.cachedString = data.str;
-	data.cachedWidth = data.renderWidth;
-	data.cachedLength = data.len;
-	
 }

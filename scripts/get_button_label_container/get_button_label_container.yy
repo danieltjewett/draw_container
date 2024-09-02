@@ -1,5 +1,5 @@
 {
-  "$GMScript":"v1",
+  "$GMScript":"",
   "%Name":"get_button_label_container",
   "isCompatibility":false,
   "isDnD":false,

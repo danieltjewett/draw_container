@@ -159,6 +159,18 @@ function draw_container_get_properties(data)
 		data.str = "";
 	}
 	
+	//internal properties for optimization
+	//these have to be here, since this function is ran once on initialization of draw_container
+	data.cachedString = undefined;
+	data.cachedWidth = undefined;
+	data.cachedTypewriterLength = undefined;
+	//
+	
+	if (!variable_struct_exists(data, "typewriterLength"))
+	{
+		data.typewriterLength = undefined; //we only make use of it, if it is defined
+	}
+	
 	if (!variable_struct_exists(data, "font"))
 	{
 		data.font = font_Arial8;
@@ -252,25 +264,8 @@ function draw_container_get_properties(data)
 	}
 	else if (data.fillAlpha == -1)
 	{
-		data.fillAlpha = .8;
+		data.fillAlpha = HELPER_DIALOG_ALPHA;
 	}
-	
-	//define the cached string/width/length (used to see if they are the changed for some calculations)
-	if (!variable_struct_exists(data, "cachedString"))
-	{
-		data.cachedString = undefined;
-	}
-	
-	if (!variable_struct_exists(data, "cachedWidth"))
-	{
-		data.cachedWidth = undefined;
-	}
-	
-	if (!variable_struct_exists(data, "cachedLength"))
-	{
-		data.cachedLength = undefined;
-	}
-	
 	
 	if (!variable_struct_exists(data, "radius"))
 	{
@@ -310,13 +305,6 @@ function draw_container_get_properties(data)
 	if (!variable_struct_exists(data, "shaderFunc"))
 	{
 		data.shaderFunc = -1;
-	}
-	
-	//fill in values if the data is incomplete
-	update_data_with_components(data);
-	if (!struct_exists(data, "len"))
-	{
-		data.len = string_length(data.str);
 	}
 	
 	if (hasChildren)

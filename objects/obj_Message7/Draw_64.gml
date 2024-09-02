@@ -64,7 +64,7 @@ container.children = [];
 		
 			var messageData = {
 				str: currentMessage,
-				len: characterCounter,
+				typewriterLength: characterCounter,
 				y: 8,
 				paddingTop: 10,
 				paddingRight: 20,
